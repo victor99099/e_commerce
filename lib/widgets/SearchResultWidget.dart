@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/categories-model.dart';
 import 'package:flutter_application_1/models/product-model.dart';
+import 'package:flutter_application_1/utils/app-constant.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_card/image_card.dart';
@@ -117,10 +118,10 @@ class SearchResultWidget extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10)),
                       elevation: 5,
                       child: Container(
-                        padding: EdgeInsets.only(left: 10),
+                        padding: EdgeInsets.only(top: 5),
                         margin: EdgeInsets.all(0),
                         decoration: BoxDecoration(
-                            color: currentTheme.colorScheme.surface,
+                            color: currentTheme.primaryColorLight.withOpacity(1),
                             border: Border.all(color: Colors.transparent),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(10))),
@@ -132,9 +133,9 @@ class SearchResultWidget extends StatelessWidget {
                                 child: FillImageCard(
                                   contentPadding:
                                       EdgeInsets.only(bottom: 0, top: 2),
-                                  color: currentTheme.colorScheme.surface,
+                                  color: currentTheme.cardColor.withOpacity(0),
                                   borderRadius: 20,
-                                  width: Get.width / 2.6,
+                                  width: Get.width / 2.25,
                                   heightImage: Get.height / 4.5,
                                   height: Get.height / 1.2,
                                   imageProvider: CachedNetworkImageProvider(
@@ -196,8 +197,7 @@ class SearchResultWidget extends StatelessWidget {
                                                 height: Get.height * 0.045,
                                                 child: Card(
                                                   margin: EdgeInsets.all(1),
-                                                  color: currentTheme
-                                                      .colorScheme.secondary,
+                                                  color: MyTheme.dark,
                                                   shape: RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -232,8 +232,7 @@ class SearchResultWidget extends StatelessWidget {
                                                 height: Get.height * 0.045,
                                                 child: Card(
                                                   margin: EdgeInsets.all(1),
-                                                  color: currentTheme
-                                                      .colorScheme.secondary,
+                                                  color: MyTheme.dark,
                                                   shape: RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(

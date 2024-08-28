@@ -31,8 +31,10 @@ import 'package:flutter_application_1/widgets/productsSliderWidget.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../models/order-model.dart';
 import '../../widgets/headingWidget.dart';
 import '../../widgets/headingWidgetCat.dart';
 import '../../widgets/newArrivalWidget.dart';
@@ -242,6 +244,16 @@ class _SettingScreenState extends State<SettingScreen> {
                                 onTap: () {},
                                 icon: Iconsax.notification,
                               ),
+                              SettingHeading(
+                                headingTitle: "Help & Support",
+                                headingSubtitle:
+                                    "Chat with us on whatsapp",
+                                onTap: () {
+                                  askAnyQuestionOnWhatsapp();
+
+                                },
+                                icon: Iconsax.message,
+                              ),
                               
                               "App Settings"
                                   .text
@@ -346,5 +358,20 @@ class _SettingScreenState extends State<SettingScreen> {
           }
           return Container();
         });
+  }
+}
+Future<void> askAnyQuestionOnWhatsapp() async {
+  final number = '+923112709619';
+  final message = "Hello Deebugs \n I want to know about ";
+
+  final url = 'https://wa.me/$number?text=${Uri.encodeComponent(message)}';
+  try {
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
+    } else {
+      throw "Could not launch $url";
+    }
+  } catch (e) {
+    print("Error: $e");
   }
 }

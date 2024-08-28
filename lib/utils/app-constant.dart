@@ -20,6 +20,7 @@ class MyTheme {
       canvasColor: light,
       primaryColor: Colors.white,
       primaryColorLight: Colors.white,
+      primaryColorDark: light,
       colorScheme: ColorScheme.light(
           primary: light,
           onPrimary: dark,
@@ -40,6 +41,7 @@ class MyTheme {
       canvasColor: darkLight,
       primaryColor: const Color.fromARGB(255, 41, 38, 38),
       primaryColorLight: const Color.fromARGB(255, 71, 71, 71),
+      primaryColorDark: const Color.fromARGB(255, 41, 38, 38),
       colorScheme: ColorScheme.dark(
           primary: darkLight, // AppBar background color
           onPrimary: Colors.white, // text color

@@ -14,6 +14,7 @@ import '../controllers/CartItemsController.dart';
 import '../controllers/wishlistController.dart';
 import '../models/cart-model.dart';
 import '../screens/user-panel/ProductDetailScreen.dart';
+import '../utils/app-constant.dart';
 
 class ProductsSliderWidget extends StatelessWidget {
   const ProductsSliderWidget({super.key});
@@ -26,7 +27,7 @@ class ProductsSliderWidget extends StatelessWidget {
     return FutureBuilder(
         future: FirebaseFirestore.instance
             .collection('products')
-            .where('isSale', isEqualTo: false)
+            // .where('isSale', isEqualTo: false)
             .get(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -51,8 +52,8 @@ class ProductsSliderWidget extends StatelessWidget {
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisSpacing: 3,
-                crossAxisSpacing: 4,
+                mainAxisSpacing: 0,
+                crossAxisSpacing: 0,
                 childAspectRatio: 0.6,
               ),
               itemCount: snapshot.data!.docs.length,
@@ -95,10 +96,10 @@ class ProductsSliderWidget extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10)),
                       elevation: 5,
                       child: Container(
-                        padding: EdgeInsets.only(left: 10),
+                        padding: EdgeInsets.only(top: 5),
                         margin: EdgeInsets.all(0),
                         decoration: BoxDecoration(
-                            color: currentTheme.colorScheme.surface,
+                            color: currentTheme.primaryColorLight.withOpacity(1),
                             border: Border.all(color: Colors.transparent),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(10))),
@@ -110,7 +111,7 @@ class ProductsSliderWidget extends StatelessWidget {
                                 child: FillImageCard(
                                   contentPadding:
                                       EdgeInsets.only(bottom: 0, top: 2),
-                                  color: currentTheme.colorScheme.surface,
+                                  color: currentTheme.cardColor.withOpacity(0),
                                   borderRadius: 20,
                                   width: Get.width / 2.6,
                                   heightImage: Get.height / 4.5,
@@ -174,8 +175,7 @@ class ProductsSliderWidget extends StatelessWidget {
                                                 height: Get.height * 0.045,
                                                 child: Card(
                                                   margin: EdgeInsets.all(1),
-                                                  color: currentTheme
-                                                      .colorScheme.secondary,
+                                                  color: MyTheme.dark,
                                                   shape: RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -210,8 +210,7 @@ class ProductsSliderWidget extends StatelessWidget {
                                                 height: Get.height * 0.045,
                                                 child: Card(
                                                   margin: EdgeInsets.all(1),
-                                                  color: currentTheme
-                                                      .colorScheme.secondary,
+                                                  color: MyTheme.dark,
                                                   shape: RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(

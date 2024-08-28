@@ -4,10 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/order-model.dart';
 import 'package:flutter_application_1/screens/user-panel/checkOutScreen.dart';
+import 'package:flutter_application_1/screens/user-panel/navigationMenu.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:velocity_x/velocity_x.dart';
+
+import 'ReviewSheet.dart';
 
 class OrderDetailScreen extends StatefulWidget {
   OrderModel orderModel;
@@ -33,6 +38,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     );
     final currentTheme = Theme.of(context);
     return Scaffold(
+      backgroundColor: currentTheme.primaryColor,
       appBar: AppBar(
         elevation: 0,
         iconTheme: IconThemeData(color: currentTheme.colorScheme.tertiary),
@@ -47,53 +53,79 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: Get.width,
-              height: Get.height * 0.08,
-              child: Card(
-                // elevation: 8,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: Row(
-                  children: [
-                    Icon(
-                      Iconsax.truck,
-                      color: currentTheme.colorScheme.onPrimary,
-                    ),
-                    widget.orderModel.status
-                        ? Container(
-                            height: Get.height * 0.05,
-                            width: Get.width * 0.7,
-                            child:
-                                "Your order has been delivered to you on ${shippingDay}, Tap to give a review"
-                                    .text
-                                    .color(
-                                        currentTheme.colorScheme.tertiaryFixed)
-                                    // .overflow(TextOverflow.ellipsis)
-                                    .make(),
-                          ).pOnly(left: 10)
-                        : Container(
-                            height: Get.height * 0.05,
-                            width: Get.width * 0.7,
-                            child:
-                                "Your order wyll be delivered to you on ${shippingDay}, Tap to track your order"
-                                    .text
-                                    .make(),
-                          ).pOnly(left: 10),
-                    ">"
-                        .text
-                        .textStyle(TextStyle(fontSize: 100))
-                        .color(currentTheme.colorScheme.tertiaryFixed)
-                        .make()
-                        .pOnly(left: 20)
-                  ],
-                ).pOnly(left: 10),
+            GestureDetector(
+              onTap: () {
+                if (widget.orderModel.status) {
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return DraggableScrollableSheet(
+                        initialChildSize:
+                            0.75, // Adjust this value to increase the initial size
+                        minChildSize: 0.5, // The minimum size when dragged down
+                        maxChildSize:
+                            1.0, // The maximum size when fully expanded
+                        expand: false,
+                        builder: (context, scrollController) {
+                          return ReviewSheet(
+                              productId: widget.orderModel.productId);
+                        },
+                      );
+                    },
+                  );
+                } else {}
+              },
+              child: Container(
+                width: Get.width,
+                height: Get.height * 0.08,
+                child: Card(
+                  color: currentTheme.primaryColorLight,
+                  // elevation: 8,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Iconsax.truck,
+                        color: currentTheme.colorScheme.onPrimary,
+                      ),
+                      widget.orderModel.status
+                          ? Container(
+                              height: Get.height * 0.05,
+                              width: Get.width * 0.7,
+                              child:
+                                  "Your order has been delivered to you on ${shippingDay}, Tap to give a review"
+                                      .text
+                                      .color(currentTheme
+                                          .colorScheme.tertiaryFixed)
+                                      // .overflow(TextOverflow.ellipsis)
+                                      .make(),
+                            ).pOnly(left: 10)
+                          : Container(
+                              height: Get.height * 0.05,
+                              width: Get.width * 0.7,
+                              child:
+                                  "Your order wyll be delivered to you on ${shippingDay}, Tap to track your order"
+                                      .text
+                                      .make(),
+                            ).pOnly(left: 10),
+                      ">"
+                          .text
+                          .textStyle(TextStyle(fontSize: 100))
+                          .color(currentTheme.colorScheme.tertiaryFixed)
+                          .make()
+                          .pOnly(left: 20)
+                    ],
+                  ).pOnly(left: 10),
+                ),
               ),
             ),
             Container(
               width: Get.width,
               height: Get.height * 0.12,
               child: Card(
+                color: currentTheme.primaryColorLight,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 child: Row(
@@ -128,11 +160,12 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                   ],
                 ),
               ),
-            ).pOnly(top: 10),
+            ).pOnly(top: 0),
             Container(
               width: Get.width,
               height: Get.height * 0.15,
               child: Card(
+                color: currentTheme.primaryColorLight,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 child: Row(
@@ -243,6 +276,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               width: Get.width,
               height: Get.height * 0.6,
               child: Card(
+                color: currentTheme.primaryColorLight,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 child: Column(
@@ -254,6 +288,77 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         .bold
                         .color(currentTheme.colorScheme.tertiaryFixed)
                         .make(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        "Order Id"
+                            .text
+                            .textStyle(TextStyle(fontSize: 9))
+                            .color(currentTheme.colorScheme.tertiaryFixed)
+                            .make(),
+                        widget.orderModel.orderId.text
+                            .textStyle(TextStyle(fontSize: 11))
+                            .color(currentTheme.colorScheme.tertiaryFixed)
+                            .overflow(TextOverflow.ellipsis)
+                            .make().w(Get.width*0.3)
+                            .pOnly(right: 10)
+                      ],
+                    ).pOnly(left: 0, top: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        "Placed on"
+                            .text
+                            .textStyle(TextStyle(fontSize: 9))
+                            .color(currentTheme.colorScheme.tertiaryFixed)
+                            .make(),
+                        ("${orderDay}")
+                            .text
+                            .textStyle(TextStyle(fontSize: 11))
+                            .color(currentTheme.colorScheme.tertiaryFixed)
+                            .make()
+                            .pOnly(right: 10)
+                      ],
+                    ).pOnly(left: 0, top: 4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        "Shipping Date"
+                            .text
+                            .textStyle(TextStyle(fontSize: 9))
+                            .color(currentTheme.colorScheme.tertiaryFixed)
+                            .make(),
+                        shippingDay2.text
+                            .textStyle(TextStyle(fontSize: 11))
+                            .color(currentTheme.colorScheme.tertiaryFixed)
+                            .make()
+                            .pOnly(right: 10)
+                      ],
+                    ).pOnly(left: 0, top: 4),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        "Payment Method"
+                            .text
+                            .textStyle(TextStyle(fontSize: 9))
+                            .color(currentTheme.colorScheme.tertiaryFixed)
+                            .make(),
+                        (widget.orderModel.payOption == 'Cash')
+                            ? ("Cash on delivery")
+                                .text
+                                .textStyle(TextStyle(fontSize: 11))
+                                .color(currentTheme.colorScheme.tertiaryFixed)
+                                .make()
+                                .pOnly(right: 10)
+                            : ("Card")
+                                .text
+                                .textStyle(TextStyle(fontSize: 11))
+                                .color(currentTheme.colorScheme.tertiaryFixed)
+                                .make()
+                                .pOnly(right: 10)
+                      ],
+                    ).pOnly(left: 0, top: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -319,84 +424,90 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             .pOnly(right: 10)
                       ],
                     ).pOnly(left: 0, top: 10),
-                    "Order Details"
-                        .text
-                        .bold
-                        .color(currentTheme.colorScheme.tertiaryFixed)
-                        .make()
-                        .pOnly(top: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        "Order Id"
-                            .text
-                            .textStyle(TextStyle(fontSize: 9))
-                            .color(currentTheme.colorScheme.tertiaryFixed)
-                            .make(),
-                        ("asbfhsa siafk")
-                            .text
-                            .textStyle(TextStyle(fontSize: 11))
-                            .color(currentTheme.colorScheme.tertiaryFixed)
-                            .make()
-                            .pOnly(right: 10)
+                        Material(
+                          color: Colors.transparent,
+                          child: Container(
+                            color: Colors.transparent,
+                            child: TextButton(
+                              style: ButtonStyle(
+                                  foregroundColor: WidgetStatePropertyAll(
+                                      Colors.transparent),
+                                  backgroundColor: WidgetStateProperty.all(
+                                      currentTheme.colorScheme.onPrimary),
+                                  shape: WidgetStatePropertyAll(
+                                      RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)))),
+                                  overlayColor: WidgetStatePropertyAll(
+                                      currentTheme.colorScheme.primary)),
+                              onPressed: () {
+                                Get.to(() => NavigationMenu());
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  "Back To Home"
+                                      .text
+                                      .color(currentTheme.primaryColor)
+                                      .make(),
+                                  Icon(
+                                    Iconsax.home,
+                                    color: currentTheme.primaryColor,
+                                  ).pOnly(left: 10)
+                                ],
+                              ),
+                            ).wh((Get.width * 0.8), (Get.height / 16)),
+                          ),
+                        ).pOnly(top: 15),
+                        Material(
+                          color: Colors.transparent,
+                          child: Container(
+                            color: Colors.transparent,
+                            child: TextButton(
+                              style: ButtonStyle(
+                                  foregroundColor: WidgetStatePropertyAll(
+                                      Colors.transparent),
+                                  backgroundColor: WidgetStateProperty.all(
+                                      currentTheme.primaryColorDark),
+                                  shape: WidgetStatePropertyAll(
+                                      RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)))),
+                                  overlayColor: WidgetStatePropertyAll(
+                                      currentTheme.colorScheme.primary)),
+                              onPressed: () {
+                                askQuestionOnWhatsapp(
+                                    orderModel: widget.orderModel);
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  "Chat With Us"
+                                      .text
+                                      .color(currentTheme.colorScheme.onPrimary)
+                                      .make(),
+                                  Icon(
+                                    Iconsax.message,
+                                    color: currentTheme.colorScheme.onPrimary,
+                                  ).pOnly(left: 10)
+                                ],
+                              ),
+                            ).wh((Get.width * 0.8), (Get.height / 16)),
+                          ),
+                        ).pOnly(top: 10),
                       ],
-                    ).pOnly(left: 0, top: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        "Placed on"
-                            .text
-                            .textStyle(TextStyle(fontSize: 9))
-                            .color(currentTheme.colorScheme.tertiaryFixed)
-                            .make(),
-                        ("${orderDay}")
-                            .text
-                            .textStyle(TextStyle(fontSize: 11))
-                            .color(currentTheme.colorScheme.tertiaryFixed)
-                            .make()
-                            .pOnly(right: 10)
-                      ],
-                    ).pOnly(left: 0, top: 4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        "Shipping Date"
-                            .text
-                            .textStyle(TextStyle(fontSize: 9))
-                            .color(currentTheme.colorScheme.tertiaryFixed)
-                            .make(),
-                        shippingDay2.text
-                            .textStyle(TextStyle(fontSize: 11))
-                            .color(currentTheme.colorScheme.tertiaryFixed)
-                            .make()
-                            .pOnly(right: 10)
-                      ],
-                    ).pOnly(left: 0, top: 4),
-                    
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        "Payment Method"
-                            .text
-                            .textStyle(TextStyle(fontSize: 13))
-                            .color(currentTheme.colorScheme.tertiary)
-                            .semiBold
-                            .make(),
-                        (widget.orderModel.payOption == 'Cash')
-                            ? ("Cash on delivery")
-                                .text
-                                // .semiBold
-                                .textStyle(TextStyle(fontSize: 13))
-                                .make()
-                                .pOnly(right: 10)
-                            : ("Card")
-                                .text
-                                // .semiBold
-                                .textStyle(TextStyle(fontSize: 13))
-                                .make()
-                                .pOnly(right: 10),
-                      ],
-                    ).pOnly(left: 0, top: 30),
+                    ).pOnly(left: 20, top: 20),
+
+                    // "Order Details"
+                    //     .text
+                    //     .bold
+                    //     .color(currentTheme.colorScheme.tertiaryFixed)
+                    //     .make()
+                    //     .pOnly(top: 30),
                   ],
                 ).pOnly(left: 10, top: 10),
               ),
@@ -438,4 +549,20 @@ String calculateShippingDay2(String deliveryTime, Timestamp createdAt) {
   final shippingDayFormatted = DateFormat('dd MMMM yyyy').format(shippingDay);
 
   return shippingDayFormatted;
+}
+
+Future<void> askQuestionOnWhatsapp({required OrderModel orderModel}) async {
+  final number = '+923112709619';
+  final message = "Hello Deebugs \n I want to know about my order ${orderModel.orderId}";
+
+  final url = 'https://wa.me/$number?text=${Uri.encodeComponent(message)}';
+  try {
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
+    } else {
+      throw "Could not launch $url";
+    }
+  } catch (e) {
+    print("Error: $e");
+  }
 }

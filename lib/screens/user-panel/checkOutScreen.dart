@@ -18,12 +18,17 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/list_notifier.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_card/image_card.dart';
+import 'package:intl/intl.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../controllers/validateInfoController.dart';
 import '../../models/cart-model.dart';
 import '../../models/user-model.dart';
+import 'OrderDetailScreen.dart';
 import 'PersonalInfoScreen.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -1056,6 +1061,7 @@ void placeOrder(
       String orderId = orderIdController.generateUniqueId();
       String customerDeviceToken = await getCustomerDeviceToken();
       OrderModel orderModel = OrderModel(
+          orderId: orderId,
           brandId: data['brandId'],
           brandName: data['brandName'],
           categoryId: data['categoryId'],
@@ -1105,6 +1111,21 @@ void placeOrder(
             .doc(orderId)
             .set(orderModel.toJson());
 
+        final shippingDay2 = calculateShippingDay2(
+          orderModel.deliveryTime,
+          orderModel.createdAt,
+        );
+
+        double taxFee = (orderModel.productTotalPrice * 0.015);
+        double orderTotal = (orderModel.productTotalPrice - taxFee - 200.0);
+
+        sendEmailAutomatically(
+          toEmail: userModel.email,
+          subject: 'Order Placement Notification',
+          body:
+              "Order Summary \n\n Order Id: ${orderModel.orderId} \n Placed on: ${DateFormat('yyyy-MM-dd').format(orderModel.createdAt)} \n Shipping Date: $shippingDay2 \n Payment Method: ${orderModel.payOption == 'Cash' ? 'Cash on delivery' : 'Card'} \n\n SubTotal: Rs ${orderModel.productTotalPrice} \n Delivery Fee: Rs 200.0 \n TAX Fee: Rs ${taxFee.toStringAsFixed(1)} \n\n Order Total: Rs ${orderTotal.toStringAsFixed(1)}",
+        );
+
         await FirebaseFirestore.instance
             .collection('cart')
             .doc(user!.uid)
@@ -1121,10 +1142,83 @@ void placeOrder(
       ),
       backgroundColor: currentTheme.colorScheme.onPrimary,
     ));
+
     EasyLoading.dismiss();
     Get.off(() => NavigationMenu());
   } catch (e) {
     print("error in placing order :  $e");
     EasyLoading.dismiss();
+  }
+}
+
+Future<void> sendEmail({
+  required String toEmail,
+  String subject = '',
+  String body = '',
+}) async {
+  final Uri emailUri = Uri(
+    scheme: 'mailto',
+    path: toEmail,
+    queryParameters: {
+      'subject': subject,
+      'body': body,
+    },
+  );
+
+  if (await canLaunchUrl(emailUri)) {
+    await launchUrl(emailUri);
+  } else {
+    throw 'Could not launch $emailUri';
+  }
+}
+
+String calculateShippingDay2(String deliveryTime, DateTime createdAt) {
+  // Extract the number of days from the deliveryTime string
+  final days = int.parse(deliveryTime.replaceAll(RegExp(r'[^0-9]'), ''));
+
+  // Convert the Firebase Timestamp to DateTime
+  final orderDate = createdAt;
+
+  // Calculate the shipping day by adding the extracted days
+  final shippingDay = orderDate.add(Duration(days: days));
+
+  // Format the shipping day into a readable string
+  final shippingDayFormatted = DateFormat('dd MMMM yyyy').format(shippingDay);
+
+  return shippingDayFormatted;
+}
+
+Future<void> sendEmailAutomatically({
+  required String toEmail,
+  required String subject,
+  required String body,
+}) async {
+  // Define the SMTP server settings
+  String username = 'abdulabcwahab123@gmail.com'; // Your email address
+  String password = 'Lionking.123'; // Your email password
+
+  final smtpServer = SmtpServer('smtp.gmail.com', // SMTP server domain
+      username: username,
+      password: password,
+      ignoreBadCertificate: true,
+      port: 587 // Usually 587, 465 or 25 for SMTP
+      );
+
+  // Create the message
+  final message = Message()
+    ..from = Address(username, 'Deebugs')
+    ..recipients.add(toEmail)
+    ..subject = subject
+    ..text = body;
+
+  try {
+    // Send the email
+    final sendReport = await send(message, smtpServer);
+    print('Message sent: ' + sendReport.toString());
+  } on MailerException catch (e) {
+    print('Message not sent. $e');
+    for (var p in e.problems) {
+      print('Problem: ${p.code}: ${p.msg}');
+    }
   }
 }

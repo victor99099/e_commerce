@@ -18,6 +18,7 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final getTheme = Theme.of(context);
     return Scaffold(
+      backgroundColor: getTheme.primaryColor,
       appBar: AppBar(
         actions: [
           InkWell(
@@ -26,7 +27,7 @@ class SearchScreen extends StatelessWidget {
           ),
         ],
         iconTheme: IconThemeData(color: getTheme.colorScheme.tertiary),
-        backgroundColor: getTheme.colorScheme.surface,
+        backgroundColor: Colors.transparent,
         title: "Store".text.color(getTheme.colorScheme.tertiary).bold.make(),
       ),
       body: Column(

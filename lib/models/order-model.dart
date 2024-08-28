@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 class OrderModel {
+  final String orderId;
   final String brandId;
   final String brandName;
   final String categoryId;
@@ -29,6 +30,7 @@ class OrderModel {
   final dynamic updatedAt;
 
   OrderModel({
+    required this.orderId,
     required this.brandId,
     required this.brandName,
     required this.categoryId,
@@ -60,6 +62,7 @@ class OrderModel {
 // Convert the object to a map
   Map<String, dynamic> toJson() {
     return {
+      'orderId': orderId,
       'brandId': brandId,
       'brandName': brandName,
       'categoryId': categoryId,
@@ -92,6 +95,7 @@ class OrderModel {
   // Create an instance of the class from a map
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     return OrderModel(
+      orderId: json['orderId'],
       brandId: json['brandId'],
       brandName: json['brandName'],
       categoryId: json['categoryId'],

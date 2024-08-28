@@ -38,6 +38,7 @@ class _OrderScreenState extends State<OrderScreen> {
   Widget build(BuildContext context) {
     final currentTheme = Theme.of(context);
     return Scaffold(
+      backgroundColor: currentTheme.primaryColor,
         appBar: AppBar(
           actions: [
             InkWell(
@@ -78,10 +79,11 @@ class _OrderScreenState extends State<OrderScreen> {
                   }
                 },
               ),
-            )
+            ),
+            
           ],
           iconTheme: IconThemeData(color: currentTheme.colorScheme.tertiary),
-          backgroundColor: currentTheme.colorScheme.surface,
+          backgroundColor: Colors.transparent,
           title: "Orders"
               .text
               .color(currentTheme.colorScheme.tertiary)
@@ -109,7 +111,7 @@ class _OrderScreenState extends State<OrderScreen> {
             }
             if (snapshot.data!.docs.isEmpty) {
               return Center(
-                child: "No Products Found".text.make(),
+                child: "No Orders Found".text.make(),
               );
             }
 
@@ -143,6 +145,7 @@ class _OrderScreenState extends State<OrderScreen> {
                           //   isBest: productData['isBest'],
                           // );
                           OrderModel orderModel = OrderModel(
+                              orderId: productData['orderId'],
                               payOption: productData['payOption'],
                               customerAddress: productData['customerAddress'],
                               customerDeviceToken:
@@ -222,318 +225,322 @@ class _OrderScreenState extends State<OrderScreen> {
                                 onTap: (){
                                   Get.to(()=>OrderDetailScreen(orderModel : orderModel));
                                 },
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  elevation: 5,
-                                  child: VxBox(
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            CatalogImage(
-                                                image:
-                                                    orderModel.productImages[0]),
-                                            Expanded(
-                                              child: Padding(
-                                                padding: EdgeInsets.all(0),
-                                                child: Column(
+                                child: Container(
+                                  color: currentTheme.primaryColor,
+                                  child: Card(
+                                    color: currentTheme.primaryColorLight,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10)),
+                                    elevation: 5,
+                                    child: VxBox(
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              CatalogImage(
+                                                  image:
+                                                      orderModel.productImages[0]),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                    children: [
+                                                      orderModel
+                                                          .productName.text.bold
+                                                          .textStyle(TextStyle(
+                                                              fontSize: 11))
+                                                          .overflow(
+                                                              TextOverflow.ellipsis)
+                                                          .color(currentTheme
+                                                              .colorScheme
+                                                              .onPrimary)
+                                                          .make()
+                                                          .pOnly(right: 10),
+                                                      4.heightBox,
+                                                      Row(
+                                                        children: [
+                                                          FutureBuilder<String>(
+                                                            future:
+                                                                fetchBrandImageUrl(
+                                                                    orderModel
+                                                                        .brandId),
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              if (snapshot
+                                                                      .connectionState ==
+                                                                  ConnectionState
+                                                                      .waiting) {
+                                                                return CircularProgressIndicator();
+                                                              } else if (snapshot
+                                                                  .hasError) {
+                                                                print(
+                                                                    snapshot.error);
+                                                                return Icon(
+                                                                    Icons.error);
+                                                              } else {
+                                                                return CachedNetworkImage(
+                                                                  imageUrl: snapshot
+                                                                      .data!,
+                                                                  width: 16,
+                                                                  height: 16,
+                                                                  placeholder: (context,
+                                                                          url) =>
+                                                                      CircularProgressIndicator(),
+                                                                  errorWidget: (context,
+                                                                          url,
+                                                                          error) =>
+                                                                      Icon(Icons
+                                                                          .error),
+                                                                );
+                                                              }
+                                                            },
+                                                          ),
+                                                          Container(
+                                                              alignment: Alignment
+                                                                  .centerLeft,
+                                                              padding:
+                                                                  EdgeInsets.only(
+                                                                      left: 2),
+                                                              child: "${orderModel.brandName}"
+                                                                  .text
+                                                                  .textStyle(
+                                                                      TextStyle(
+                                                                          fontSize:
+                                                                              10))
+                                                                  .align(TextAlign
+                                                                      .left)
+                                                                  .color(currentTheme
+                                                                      .colorScheme
+                                                                      .tertiary)
+                                                                  .make()),
+                                                          Image.asset(
+                                                            'assets/images/verifiedicon.png', // Replace with your icon path
+                                                            width: 8,
+                                                            height: 8,
+                                                            // color: Colors.white,
+                                                          ).pOnly(left: 2),
+                                                        ],
+                                                      ),
+                                                      4.heightBox,
+                                                      "Color : ${orderModel.productColor}"
+                                                          .text
+                                                          .textStyle(TextStyle(
+                                                              fontSize: 10))
+                                                          .light
+                                                          .overflow(
+                                                              TextOverflow.ellipsis)
+                                                          .color(currentTheme
+                                                              .colorScheme.tertiary)
+                                                          .make()
+                                                          .pOnly(right: 10),
+                                                      // 10.0.heightBox,
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.all(0),
+                                                            // height: Get.height * 0.05,
+                                                            child: orderModel.isSale
+                                                                ? "Rs ${orderModel.salePrice}"
+                                                                    .text
+                                                                    .bold
+                                                                    .textStyle(
+                                                                        TextStyle(
+                                                                            fontSize:
+                                                                                10))
+                                                                    .make()
+                                                                : "Rs ${orderModel.fullPrice}"
+                                                                    .text
+                                                                    .bold
+                                                                    .textStyle(
+                                                                        TextStyle(
+                                                                            fontSize:
+                                                                                10))
+                                                                    .make(),
+                                                          ),
+                                                          "Qty : ${orderModel.productQuantity}"
+                                                              .text
+                                                              .bold
+                                                              .textStyle(TextStyle(
+                                                                  fontSize: 10))
+                                                              .make()
+                                                              .pOnly(right: 20)
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Container(
+                                            width: Get.width * 0.95,
+                                            height: Get.height / 8,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
-                                                    orderModel
-                                                        .productName.text.bold
-                                                        .textStyle(TextStyle(
-                                                            fontSize: 11))
-                                                        .overflow(
-                                                            TextOverflow.ellipsis)
-                                                        .color(currentTheme
-                                                            .colorScheme
-                                                            .onPrimary)
-                                                        .make()
-                                                        .pOnly(right: 10),
-                                                    4.heightBox,
                                                     Row(
                                                       children: [
-                                                        FutureBuilder<String>(
-                                                          future:
-                                                              fetchBrandImageUrl(
-                                                                  orderModel
-                                                                      .brandId),
-                                                          builder: (context,
-                                                              snapshot) {
-                                                            if (snapshot
-                                                                    .connectionState ==
-                                                                ConnectionState
-                                                                    .waiting) {
-                                                              return CircularProgressIndicator();
-                                                            } else if (snapshot
-                                                                .hasError) {
-                                                              print(
-                                                                  snapshot.error);
-                                                              return Icon(
-                                                                  Icons.error);
-                                                            } else {
-                                                              return CachedNetworkImage(
-                                                                imageUrl: snapshot
-                                                                    .data!,
-                                                                width: 16,
-                                                                height: 16,
-                                                                placeholder: (context,
-                                                                        url) =>
-                                                                    CircularProgressIndicator(),
-                                                                errorWidget: (context,
-                                                                        url,
-                                                                        error) =>
-                                                                    Icon(Icons
-                                                                        .error),
-                                                              );
-                                                            }
-                                                          },
-                                                        ),
-                                                        Container(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    left: 2),
-                                                            child: "${orderModel.brandName}"
+                                                        "Status : "
+                                                            .text
+                                                            .textStyle(TextStyle(
+                                                                fontSize: 12))
+                                                            .color(currentTheme
+                                                                .colorScheme
+                                                                .tertiaryFixed)
+                                                            .make(),
+                                                        orderModel.status
+                                                            ? "Delivered"
                                                                 .text
                                                                 .textStyle(
                                                                     TextStyle(
                                                                         fontSize:
-                                                                            10))
-                                                                .align(TextAlign
-                                                                    .left)
+                                                                            13))
                                                                 .color(currentTheme
                                                                     .colorScheme
                                                                     .tertiary)
-                                                                .make()),
-                                                        Image.asset(
-                                                          'assets/images/verifiedicon.png', // Replace with your icon path
-                                                          width: 8,
-                                                          height: 8,
-                                                          // color: Colors.white,
-                                                        ).pOnly(left: 2),
-                                                      ],
-                                                    ),
-                                                    4.heightBox,
-                                                    "Color : ${orderModel.productColor}"
-                                                        .text
-                                                        .textStyle(TextStyle(
-                                                            fontSize: 10))
-                                                        .light
-                                                        .overflow(
-                                                            TextOverflow.ellipsis)
-                                                        .color(currentTheme
-                                                            .colorScheme.tertiary)
-                                                        .make()
-                                                        .pOnly(right: 10),
-                                                    // 10.0.heightBox,
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Container(
-                                                          margin:
-                                                              EdgeInsets.all(0),
-                                                          // height: Get.height * 0.05,
-                                                          child: orderModel.isSale
-                                                              ? "Rs ${orderModel.salePrice}"
-                                                                  .text
-                                                                  .bold
-                                                                  .textStyle(
-                                                                      TextStyle(
-                                                                          fontSize:
-                                                                              10))
-                                                                  .make()
-                                                              : "Rs ${orderModel.fullPrice}"
-                                                                  .text
-                                                                  .bold
-                                                                  .textStyle(
-                                                                      TextStyle(
-                                                                          fontSize:
-                                                                              10))
-                                                                  .make(),
-                                                        ),
-                                                        "Qty : ${orderModel.productQuantity}"
-                                                            .text
-                                                            .bold
-                                                            .textStyle(TextStyle(
-                                                                fontSize: 10))
-                                                            .make()
-                                                            .pOnly(right: 20)
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Container(
-                                          width: Get.width * 0.95,
-                                          height: Get.height / 8,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      "Status : "
-                                                          .text
-                                                          .textStyle(TextStyle(
-                                                              fontSize: 12))
-                                                          .color(currentTheme
-                                                              .colorScheme
-                                                              .tertiaryFixed)
-                                                          .make(),
-                                                      orderModel.status
-                                                          ? "Delivered"
-                                                              .text
-                                                              .textStyle(
-                                                                  TextStyle(
-                                                                      fontSize:
-                                                                          13))
-                                                              .color(currentTheme
-                                                                  .colorScheme
-                                                                  .tertiary)
-                                                              .make()
-                                                          : "In Progress"
-                                                              .text
-                                                              .textStyle(
-                                                                  TextStyle(
-                                                                      fontSize:
-                                                                          13))
-                                                              .color(currentTheme
-                                                                  .colorScheme
-                                                                  .tertiary)
-                                                              .make(),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      "Shipping Day : "
-                                                          .text
-                                                          .textStyle(TextStyle(
-                                                              fontSize: 12))
-                                                          .color(currentTheme
-                                                              .colorScheme
-                                                              .tertiaryFixed)
-                                                          .make(),
-                                                      shippingDay.text
-                                                          .textStyle(TextStyle(
-                                                              fontSize: 13))
-                                                          .color(currentTheme
-                                                              .colorScheme
-                                                              .tertiary)
-                                                          .make(),
-                                                    ],
-                                                  ).pOnly(top: 5),
-                                                  Row(
-                                                    children: [
-                                                      "Total : "
-                                                          .text
-                                                          .textStyle(TextStyle(
-                                                              fontSize: 12))
-                                                          .color(currentTheme
-                                                              .colorScheme
-                                                              .tertiaryFixed)
-                                                          .make(),
-                                                      orderModel
-                                                          .productTotalPrice.text
-                                                          .textStyle(TextStyle(
-                                                              fontSize: 13))
-                                                          .color(currentTheme
-                                                              .colorScheme
-                                                              .tertiary)
-                                                          .make()
-                                                    ],
-                                                  ).pOnly(top: 5)
-                                                ],
-                                              ).pOnly(left: 15),
-                                              Material(
-                                                color: Colors.transparent,
-                                                child: Container(
-                                                  color: Colors.transparent,
-                                                  child: TextButton(
-                                                    style: ButtonStyle(
-                                                        foregroundColor: WidgetStatePropertyAll(
-                                                            Colors.transparent),
-                                                        backgroundColor:
-                                                            WidgetStateProperty.all(
-                                                                currentTheme
+                                                                .make()
+                                                            : "In Progress"
+                                                                .text
+                                                                .textStyle(
+                                                                    TextStyle(
+                                                                        fontSize:
+                                                                            13))
+                                                                .color(currentTheme
                                                                     .colorScheme
-                                                                    .onPrimary),
-                                                        shape: WidgetStatePropertyAll(
-                                                            RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius.all(
-                                                                        Radius.circular(
-                                                                            10)))),
-                                                        overlayColor:
-                                                            WidgetStatePropertyAll(
-                                                                currentTheme.colorScheme.primary)),
-                                                    onPressed: () {
-                                                      if (orderModel.status) {
-                                                        showModalBottomSheet(
-                                                          isScrollControlled: true,
-                                                          context: context,
-                                                          builder: (BuildContext context) {
-                                                            return DraggableScrollableSheet(
-                                                              initialChildSize:
-                                                                  0.75, // Adjust this value to increase the initial size
-                                                              minChildSize:
-                                                                  0.5, // The minimum size when dragged down
-                                                              maxChildSize:
-                                                                  1.0, // The maximum size when fully expanded
-                                                              expand: false,
-                                                              builder: (context, scrollController) {
-                                                                return ReviewSheet(
-                                                                    productId: orderModel.productId);
-                                                              },
-                                                            );
-                                                          },
-                                                        );
-                                                      } else {}
-                                                    },
-                                                    child: orderModel.status
-                                                        ? "Review"
+                                                                    .tertiary)
+                                                                .make(),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        "Shipping Day : "
                                                             .text
+                                                            .textStyle(TextStyle(
+                                                                fontSize: 12))
                                                             .color(currentTheme
                                                                 .colorScheme
-                                                                .surface)
-                                                            .make()
-                                                        : "Track"
-                                                            .text
-                                                            .color(currentTheme
-                                                                .colorScheme
-                                                                .surface)
+                                                                .tertiaryFixed)
                                                             .make(),
-                                                  ).wh(Get.width * 0.3,
-                                                      Get.height / 14),
-                                                ),
-                                              ).pOnly(right: 15),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                      .color(currentTheme.colorScheme.surface)
-                                      .rounded
-                                      .square(Get.height / 3.5)
-                                      .make()
-                                      .py4(),
+                                                        shippingDay.text
+                                                            .textStyle(TextStyle(
+                                                                fontSize: 13))
+                                                            .color(currentTheme
+                                                                .colorScheme
+                                                                .tertiary)
+                                                            .make(),
+                                                      ],
+                                                    ).pOnly(top: 5),
+                                                    Row(
+                                                      children: [
+                                                        "Total : "
+                                                            .text
+                                                            .textStyle(TextStyle(
+                                                                fontSize: 12))
+                                                            .color(currentTheme
+                                                                .colorScheme
+                                                                .tertiaryFixed)
+                                                            .make(),
+                                                        orderModel
+                                                            .productTotalPrice.text
+                                                            .textStyle(TextStyle(
+                                                                fontSize: 13))
+                                                            .color(currentTheme
+                                                                .colorScheme
+                                                                .tertiary)
+                                                            .make()
+                                                      ],
+                                                    ).pOnly(top: 5)
+                                                  ],
+                                                ).pOnly(left: 15),
+                                                Material(
+                                                  color: Colors.transparent,
+                                                  child: Container(
+                                                    color: Colors.transparent,
+                                                    child: TextButton(
+                                                      style: ButtonStyle(
+                                                          foregroundColor: WidgetStatePropertyAll(
+                                                              Colors.transparent),
+                                                          backgroundColor:
+                                                              WidgetStateProperty.all(
+                                                                  currentTheme
+                                                                      .colorScheme
+                                                                      .onPrimary),
+                                                          shape: WidgetStatePropertyAll(
+                                                              RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius.all(
+                                                                          Radius.circular(
+                                                                              10)))),
+                                                          overlayColor:
+                                                              WidgetStatePropertyAll(
+                                                                  currentTheme.colorScheme.primary)),
+                                                      onPressed: () {
+                                                        if (orderModel.status) {
+                                                          showModalBottomSheet(
+                                                            isScrollControlled: true,
+                                                            context: context,
+                                                            builder: (BuildContext context) {
+                                                              return DraggableScrollableSheet(
+                                                                initialChildSize:
+                                                                    0.75, // Adjust this value to increase the initial size
+                                                                minChildSize:
+                                                                    0.5, // The minimum size when dragged down
+                                                                maxChildSize:
+                                                                    1.0, // The maximum size when fully expanded
+                                                                expand: false,
+                                                                builder: (context, scrollController) {
+                                                                  return ReviewSheet(
+                                                                      productId: orderModel.productId);
+                                                                },
+                                                              );
+                                                            },
+                                                          );
+                                                        } else {}
+                                                      },
+                                                      child: orderModel.status
+                                                          ? "Review"
+                                                              .text
+                                                              .color(currentTheme
+                                                                  .colorScheme
+                                                                  .surface)
+                                                              .make()
+                                                          : "Track"
+                                                              .text
+                                                              .color(currentTheme
+                                                                  .colorScheme
+                                                                  .surface)
+                                                              .make(),
+                                                    ).wh(Get.width * 0.3,
+                                                        Get.height / 14),
+                                                  ),
+                                                ).pOnly(right: 15),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                        .color(currentTheme.primaryColorLight)
+                                        .rounded
+                                        .square(Get.height / 3.5)
+                                        .make()
+                                        .py4(),
+                                  ),
                                 ),
                               ));
                         }),
