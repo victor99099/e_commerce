@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "635663434875",
+    "project_id": "e-commerece-f7d89",
+    "storage_bucket": "e-commerece-f7d89.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635663434875:android:ed14551eaec98b70d4cede",
+        "android_client_info": {
+          "package_name": "com.shopifyClone.ecommerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "635663434875-3k33atkrkpisnt7q0qmlvuiim381ujd3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shopifyClone.ecommerce",
+            "certificate_hash": "ce6a123c4cde6316bc2557b8988d9c23dcee2da2"
+          }
+        },
+        {
+          "client_id": "635663434875-i74o6ahqv38i5pbus1jsjj0fa3s9eco0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8hDj3Dqztqz7s42EFjh7Q2r0qNPsrxzQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "635663434875-i74o6ahqv38i5pbus1jsjj0fa3s9eco0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "635663434875-76639s1dbpbisdi3ddcgh710t0uqpfo1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.eCommerce"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

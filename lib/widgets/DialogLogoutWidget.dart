@@ -1,0 +1,56 @@
+import 'package:flutter/material.dart';
+
+class CustomDialog extends StatelessWidget {
+  final String title;
+  final String content;
+  final VoidCallback onCancel;
+  final VoidCallback onConfirm;
+
+  const CustomDialog({
+    Key? key,
+    required this.title,
+    required this.content,
+    required this.onCancel,
+    required this.onConfirm,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final currentTheme = Theme.of(context);
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      title: Text(
+        title,
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
+      content: Text(
+        content,
+        style: TextStyle(fontSize: 18),
+      ),
+      actions: <Widget>[
+        TextButton(
+          style: ButtonStyle(
+            backgroundColor: WidgetStatePropertyAll(currentTheme.colorScheme.surface)
+          ),
+          onPressed: onCancel,
+          child: Text(
+            'Cancel',
+            style: TextStyle(color:currentTheme.colorScheme.onPrimary),
+          ),
+        ),
+        TextButton(
+          style: ButtonStyle(
+            backgroundColor: WidgetStatePropertyAll(currentTheme.colorScheme.onPrimary)
+          ),
+          onPressed: onConfirm,
+          child: Text(
+            'Confirm',
+            style: TextStyle(color: currentTheme.colorScheme.surface),
+          ),
+        ),
+      ],
+    );
+  }
+}
