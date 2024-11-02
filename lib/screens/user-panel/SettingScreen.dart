@@ -3,30 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application_1/controllers/GetUserDataController.dart';
-import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/models/user-model.dart';
 import 'package:flutter_application_1/screens/auth-ui/SignScreen.dart';
-import 'package:flutter_application_1/screens/auth-ui/wellcomeScreen.dart';
-import 'package:flutter_application_1/screens/user-panel/BestSellScree.dart';
-import 'package:flutter_application_1/screens/user-panel/FlashSaleScreen.dart';
-import 'package:flutter_application_1/screens/user-panel/NewArrivalScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/OrdersScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/Profilescreen.dart';
-import 'package:flutter_application_1/screens/user-panel/allCategoriesScreen.dart';
-import 'package:flutter_application_1/screens/user-panel/allFlashSaleScreen.dart';
-import 'package:flutter_application_1/screens/user-panel/allProductsScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/cartScreen.dart';
-import 'package:flutter_application_1/screens/user-panel/storeScreen.dart';
 import 'package:flutter_application_1/widgets/DialogLogoutWidget.dart';
-import 'package:flutter_application_1/widgets/SearchWidget.dart';
 import 'package:flutter_application_1/widgets/SettingSwitchHeading.dart';
 import 'package:flutter_application_1/widgets/Settingsheadingwidget.dart';
-import 'package:flutter_application_1/widgets/bannerWidget.dart';
-import 'package:flutter_application_1/widgets/categoryWidget.dart';
-import 'package:flutter_application_1/widgets/customDrawer.dart';
-import 'package:flutter_application_1/widgets/flashSaleWidget.dart';
-import 'package:flutter_application_1/widgets/productsSliderWidget.dart';
 
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -34,10 +18,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../models/order-model.dart';
-import '../../widgets/headingWidget.dart';
-import '../../widgets/headingWidgetCat.dart';
-import '../../widgets/newArrivalWidget.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -67,12 +47,12 @@ class _SettingScreenState extends State<SettingScreen> {
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           print(snapshot);
           if (snapshot.hasError) {
-            return Center(child: Text("Error"));
+            return const Center(child: Text("Error"));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container(
+            return SizedBox(
               height: Get.height / 5,
-              child: Center(
+              child: const Center(
                 child: CupertinoActivityIndicator(),
               ),
             );
@@ -107,7 +87,7 @@ class _SettingScreenState extends State<SettingScreen> {
             return Scaffold(
               appBar: AppBar(
                 iconTheme:
-                    IconThemeData(color: Colors.white),
+                    const IconThemeData(color: Colors.white),
                 backgroundColor: currentTheme.colorScheme.secondary,
                 title: Container(
                     child: "Account"
@@ -131,7 +111,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         //         image: AssetImage("assets/images/design.png"),
                         //         fit: BoxFit.cover)), //Upper widget
                         child: Container(
-                          margin: EdgeInsets.all(20),
+                          margin: const EdgeInsets.all(20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -153,20 +133,20 @@ class _SettingScreenState extends State<SettingScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   userModel.username.text
-                                      .textStyle(TextStyle(
+                                      .textStyle(const TextStyle(
                                           fontSize: 18, color: Colors.white))
                                       .make(),
                                   userModel.email.text
-                                      .textStyle(TextStyle(
+                                      .textStyle(const TextStyle(
                                           fontSize: 9, color: Colors.white))
                                       .make()
                                 ],
                               ).pOnly(left: 10),
                               IconButton(
                                 onPressed: () {
-                                  Get.to(() => ProfileScreen());
+                                  Get.to(() => const ProfileScreen());
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Iconsax.edit,
                                   color: Colors.white,
                                 ),
@@ -186,12 +166,12 @@ class _SettingScreenState extends State<SettingScreen> {
                             //   // color: currentTheme.cardColor, // Border color
                             //   width: 2,
                             // ),
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(30),
                                 topRight: Radius.circular(30)),
                           ),
                           child: ListView(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             // mainAxisAlignment: MainAxisAlignment.start,
                             // crossAxisAlignment: CrossAxisAlignment.start,
                             scrollDirection: Axis.vertical,
@@ -210,7 +190,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 headingSubtitle:
                                     "Add, remove products and move to checkout",
                                 onTap: () {
-                                  Get.to(()=>CartScreen());
+                                  Get.to(()=>const CartScreen());
                                 },
                                 icon: Iconsax.shopping_cart,
                               ).pOnly(top: 10),
@@ -219,7 +199,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 headingSubtitle:
                                     "In-progress and Completed Orders",
                                 onTap: () {
-                                  Get.to(() => OrderScreen());
+                                  Get.to(() => const OrderScreen());
                                 },
                                 icon: Iconsax.bag_tick,
                               ),
@@ -289,7 +269,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   },
                                   value: isDarkMode),
                               Padding(
-                                padding: EdgeInsets.only(left: 20, right: 20),
+                                padding: const EdgeInsets.only(left: 20, right: 20),
                                 child: Material(
                                   color: Colors.transparent,
                                   child: Container(
@@ -297,13 +277,13 @@ class _SettingScreenState extends State<SettingScreen> {
                                     child: TextButton(
                                       style: ButtonStyle(
                                           foregroundColor:
-                                              WidgetStatePropertyAll(
+                                              const WidgetStatePropertyAll(
                                                   Colors.transparent),
                                           backgroundColor:
                                               WidgetStateProperty.all(
                                                   currentTheme
                                                       .colorScheme.onPrimary),
-                                          shape: WidgetStatePropertyAll(
+                                          shape: const WidgetStatePropertyAll(
                                               RoundedRectangleBorder(
                                                   borderRadius: BorderRadius.all(
                                                       Radius.circular(10)))),
@@ -322,18 +302,18 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   },
                                                   onConfirm: () async {
                                                     Navigator.of(context).pop();
-                                                    final FirebaseAuth _auth =
+                                                    final FirebaseAuth auth =
                                                         FirebaseAuth.instance;
                                                     GoogleSignIn googleSignIn =
                                                         GoogleSignIn();
 
-                                                    await _auth.signOut();
+                                                    await auth.signOut();
 
                                                     await googleSignIn
                                                         .signOut();
 
                                                     Get.offAll(
-                                                        () => SignScreen());
+                                                        () => const SignScreen());
                                                   });
                                             });
                                       },
@@ -361,8 +341,8 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 }
 Future<void> askAnyQuestionOnWhatsapp() async {
-  final number = '+923112709619';
-  final message = "Hello Deebugs \n I want to know about ";
+  const number = '+923112709619';
+  const message = "Hello Deebugs \n I want to know about ";
 
   final url = 'https://wa.me/$number?text=${Uri.encodeComponent(message)}';
   try {

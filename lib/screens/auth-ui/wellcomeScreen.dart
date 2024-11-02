@@ -29,7 +29,7 @@ class _WellcomeScreenState extends State<WellcomeScreen> {
   }
 
   Future<Image> _loadImage(String url) {
-    return Future.delayed(Duration(seconds: 1), () => Image.network(url));
+    return Future.delayed(const Duration(seconds: 1), () => Image.network(url));
   }
   final GoogleSignInController _googleSignInController = Get.put(GoogleSignInController()); 
 
@@ -41,7 +41,7 @@ class _WellcomeScreenState extends State<WellcomeScreen> {
       body: Container(
         child: Column(
           children: [
-            Container(
+            SizedBox(
               height: Get.height * 0.3,
               width: Get.width,
               child: Lottie.asset("assets/images/loadingCart.json"),
@@ -57,7 +57,7 @@ class _WellcomeScreenState extends State<WellcomeScreen> {
                   child: Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(bottom: 20),
+                        margin: const EdgeInsets.only(bottom: 20),
                         child: "WellCome".text.xl3.align(TextAlign.center).bold.color(getTheme.colorScheme.onPrimary).make(),
                       ),
                       Column(
@@ -86,9 +86,9 @@ class _WellcomeScreenState extends State<WellcomeScreen> {
                                         future: _loadImage(google),
                                         builder: (context, snapshot) {
                                           if (snapshot.connectionState == ConnectionState.waiting) {
-                                            return CircularProgressIndicator();
+                                            return const CircularProgressIndicator();
                                           } else if (snapshot.hasError) {
-                                            return Icon(Icons.error); // Handle error case
+                                            return const Icon(Icons.error); // Handle error case
                                           } else {
                                             return snapshot.data!;
                                           }
@@ -100,12 +100,12 @@ class _WellcomeScreenState extends State<WellcomeScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10), // Spacing between the buttons
+                          const SizedBox(height: 10), // Spacing between the buttons
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
-                                Get.off(()=>SignScreen());
+                                Get.off(()=>const SignScreen());
                               },
                               borderRadius: BorderRadius.circular(200.0),
                               highlightColor: Colors.blue.shade100.withOpacity(0.5), // Color when the button is pressed
@@ -124,9 +124,9 @@ class _WellcomeScreenState extends State<WellcomeScreen> {
                                         future: _loadImage(email),
                                         builder: (context, snapshot) {
                                           if (snapshot.connectionState == ConnectionState.waiting) {
-                                            return CircularProgressIndicator();
+                                            return const CircularProgressIndicator();
                                           } else if (snapshot.hasError) {
-                                            return Icon(Icons.error); // Handle error case
+                                            return const Icon(Icons.error); // Handle error case
                                           } else {
                                             return snapshot.data!;
                                           }

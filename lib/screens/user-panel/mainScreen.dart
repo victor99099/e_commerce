@@ -1,28 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/controllers/CartItemsController.dart';
-import 'package:flutter_application_1/main.dart';
-import 'package:flutter_application_1/screens/auth-ui/wellcomeScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/BestSellScree.dart';
 import 'package:flutter_application_1/screens/user-panel/FlashSaleScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/NewArrivalScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/SearchScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/allCategoriesScreen.dart';
-import 'package:flutter_application_1/screens/user-panel/allFlashSaleScreen.dart';
-import 'package:flutter_application_1/screens/user-panel/allProductsScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/cartScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/storeScreen.dart';
 import 'package:flutter_application_1/widgets/SearchWidget.dart';
 import 'package:flutter_application_1/widgets/bannerWidget.dart';
 import 'package:flutter_application_1/widgets/categoryWidget.dart';
-import 'package:flutter_application_1/widgets/customDrawer.dart';
 import 'package:flutter_application_1/widgets/flashSaleWidget.dart';
 import 'package:flutter_application_1/widgets/productsSliderWidget.dart';
 
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -48,30 +41,30 @@ class Mainscreen extends StatelessWidget {
         actions: [
           InkWell(
             onTap: () => Get.to(() => SearchScreen()),
-            child: Icon(Iconsax.search_normal).pOnly(right: 10)
+            child: const Icon(Iconsax.search_normal).pOnly(right: 10)
           ),
           InkWell(
-            onTap: () => Get.to(() => CartScreen()),
+            onTap: () => Get.to(() => const CartScreen()),
             child: StreamBuilder<int>(
               stream: cartItemsController
                   .getCartItemsCount(), // Fetch the cart item count
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Container(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Icon(CupertinoIcons.cart),
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(CupertinoIcons.cart),
                   ); // Display an empty cart icon or a loading indicator
                 } else if (snapshot.hasError) {
                   return Container(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Icon(CupertinoIcons.cart),
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(CupertinoIcons.cart),
                   ); // Handle error case if necessary
                 } else {
                   return Container(
                     height: 40,
                     width: 40,
-                    padding: EdgeInsets.only(right: 20),
-                    child: Icon(CupertinoIcons
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(CupertinoIcons
                         .cart), // Show the cart icon with the item count
                   )
                       .badge(
@@ -85,7 +78,7 @@ class Mainscreen extends StatelessWidget {
             ),
           )
         ],
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: currentTheme.colorScheme.secondary,
         foregroundColor: currentTheme.colorScheme.secondary,
         surfaceTintColor: currentTheme.colorScheme.secondary,
@@ -100,7 +93,7 @@ class Mainscreen extends StatelessWidget {
       body: Container(
         // color: currentTheme.colorScheme.secondary,
         child: SingleChildScrollView(
-          physics: PageScrollPhysics(),
+          physics: const PageScrollPhysics(),
           child: Container(
             // color: currentTheme.colorScheme.secondary,
             child: Column(
@@ -108,7 +101,7 @@ class Mainscreen extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                       color: currentTheme.colorScheme.secondary,
-                      image: DecorationImage(
+                      image: const DecorationImage(
                           alignment: Alignment.topRight,
                           image: AssetImage("assets/images/design.png"),
                           fit: BoxFit.contain)), //Upper widget
@@ -123,10 +116,10 @@ class Mainscreen extends StatelessWidget {
                         headingSubtitle: "According to your Budget",
                         buttonText: "See more >",
                         onTap: () {
-                          Get.to(() => AllCategoriesScreen());
+                          Get.to(() => const AllCategoriesScreen());
                         },
                       ),
-                      Padding(
+                      const Padding(
                           padding: EdgeInsets.only(left: 5),
                           child: CategoryWidget()),
                     ],
@@ -142,29 +135,29 @@ class Mainscreen extends StatelessWidget {
                       color: Colors.transparent, // Border color
                       width: 2,
                     ),
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(30),
                         topRight: Radius.circular(30)),
                   ),
                   child: Column(
                     children: [
                       20.heightBox,
-                      Container(child: BannerWidget()),
+                      Container(child: const BannerWidget()),
                       HeadingWidget(
                         headingTitle: "New Arrivals",
                         headingSubtitle: "Popular these days",
                         buttonText: "See more >",
                         onTap: () {
-                          Get.to(() => NewArrivalScreen());
+                          Get.to(() => const NewArrivalScreen());
                         },
                       ),
-                      NewArrivalsWidget(),
+                      const NewArrivalsWidget(),
                       HeadingWidget(
                         headingTitle: "Flash Sale",
                         headingSubtitle: "Limited time offers",
                         buttonText: "See more >",
                         onTap: () {
-                          Get.to(() => FlashSaleScreen());
+                          Get.to(() => const FlashSaleScreen());
                         },
                       ),
                       FlashAndSaleWidget(type: 'isSale'),
@@ -173,7 +166,7 @@ class Mainscreen extends StatelessWidget {
                         headingSubtitle: "Hot Trendings",
                         buttonText: "See more >",
                         onTap: () {
-                          Get.to(() => BestSellScreen());
+                          Get.to(() => const BestSellScreen());
                         },
                       ),
                       FlashAndSaleWidget(
@@ -184,10 +177,10 @@ class Mainscreen extends StatelessWidget {
                         headingSubtitle: "Best of ours",
                         buttonText: "See more >",
                         onTap: () {
-                          Get.to(() => StoreScreen());
+                          Get.to(() => const StoreScreen());
                         },
                       ),
-                      Padding(
+                      const Padding(
                           padding: EdgeInsets.all(10),
                           child: ProductsSliderWidget()),
                     ],

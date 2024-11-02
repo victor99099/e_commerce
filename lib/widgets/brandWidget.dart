@@ -1,12 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/Brand-model.dart';
 // import 'package:flutter_application_1/screens/user-panel/singleBrandScreen.dart';
 import 'package:get/get.dart';
-import 'package:image_card/image_card.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../controllers/BrandProductsCountController.dart';
@@ -22,12 +19,12 @@ class BrandWidget extends StatelessWidget {
         future: FirebaseFirestore.instance.collection('brand').get(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
-            return Center(child: Text("Error"));
+            return const Center(child: Text("Error"));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container(
+            return SizedBox(
               height: Get.height / 5,
-              child: Center(
+              child: const Center(
                 child: CupertinoActivityIndicator(),
               ),
             );
@@ -41,11 +38,11 @@ class BrandWidget extends StatelessWidget {
           if (snapshot.data != null) {
             return Container(
               // color: Colors.black,
-              margin: EdgeInsets.all(2),
-              padding: EdgeInsets.all(5),
+              margin: const EdgeInsets.all(2),
+              padding: const EdgeInsets.all(5),
               // height: Get.height / 7,
               child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: 0,
                     crossAxisSpacing: 0,
@@ -66,8 +63,8 @@ class BrandWidget extends StatelessWidget {
                     int productCount = productController.brandCount[brandModel.brandName] ?? 0;
 
                     return Container(
-                      padding: EdgeInsets.all(0),
-                      margin: EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(0),
+                      margin: const EdgeInsets.all(0),
                       width: Get.width / 2.3,
                       height: Get.height * 0.01,
                       child: Card(
@@ -80,7 +77,7 @@ class BrandWidget extends StatelessWidget {
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Container(
+                                SizedBox(
                                     width: 40,
                                     height: 50,
                                     child: Image.network(
@@ -94,7 +91,7 @@ class BrandWidget extends StatelessWidget {
                                     Row(
                                       children: [
                                         
-                                        brandModel.brandName.text.textStyle(TextStyle(fontWeight: FontWeight.w500))
+                                        brandModel.brandName.text.textStyle(const TextStyle(fontWeight: FontWeight.w500))
                                             .make()
                                             .pOnly(left: 10),
                                         Image.asset(
@@ -105,7 +102,7 @@ class BrandWidget extends StatelessWidget {
                                         ).pOnly(left: 3),
                                       ],
                                     ),
-                                    ("${productCount} Products")
+                                    ("$productCount Products")
                                         .text
                                         .textStyle(TextStyle(
                                             fontSize: 8,

@@ -34,7 +34,7 @@ class NotificationService {
           "Please allow notifications to recieve updates",
           snackPosition: SnackPosition.BOTTOM);
 
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 2), () {
         AppSettings.openAppSettings(type: AppSettingsType.notification);
       });
     }
@@ -52,9 +52,9 @@ class NotificationService {
   void initLocalNotification(
       BuildContext context, RemoteMessage message) async {
     var androidInitSetting =
-        AndroidInitializationSettings("@mipmap/ic_launcher");
+        const AndroidInitializationSettings("@mipmap/ic_launcher");
 
-    var iosInitSetting = DarwinInitializationSettings();
+    var iosInitSetting = const DarwinInitializationSettings();
 
     var initializationSetting = InitializationSettings(
         android: androidInitSetting, iOS: iosInitSetting);
@@ -145,7 +145,7 @@ class NotificationService {
 
   Future<void> handleMessage(
       BuildContext context, RemoteMessage message) async {
-    Get.to(() => Mainscreen());
+    Get.to(() => const Mainscreen());
   }
 
   Future iosForegroundMessage() async {

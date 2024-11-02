@@ -7,9 +7,9 @@ class AppConstant {
 }
 
 class MyTheme {
-  static Color light = Color.fromARGB(255, 210, 227, 241);
-  static Color medlight = Color.fromARGB(255, 188, 223, 255);
-  static Color dark = Color.fromARGB(255, 69, 164, 228);
+  static Color light = const Color.fromARGB(255, 210, 227, 241);
+  static Color medlight = const Color.fromARGB(255, 188, 223, 255);
+  static Color dark = const Color.fromARGB(255, 69, 164, 228);
   static Color darkLight = Colors.white;
   static Color medDark = const Color.fromARGB(157, 56, 55, 55);
   static Color darkDark = const Color.fromARGB(157, 3, 3, 3);
@@ -54,7 +54,7 @@ class MyTheme {
           style: ButtonStyle(overlayColor: WidgetStatePropertyAll(medlight))),
       textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
-            foregroundColor: WidgetStatePropertyAll(Colors.white),
+            foregroundColor: const WidgetStatePropertyAll(Colors.white),
             backgroundColor: WidgetStatePropertyAll(dark),
             splashFactory: InkRipple.splashFactory,
             overlayColor: WidgetStatePropertyAll(medlight),

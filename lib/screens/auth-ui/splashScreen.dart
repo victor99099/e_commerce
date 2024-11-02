@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/GetUserDataController.dart';
 import 'package:flutter_application_1/screens/admin-panel/admin-main-screen.dart';
 import 'package:flutter_application_1/screens/auth-ui/SignScreen.dart';
-import 'package:flutter_application_1/screens/user-panel/mainScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/navigationMenu.dart';
 
 import 'package:get/get.dart';
@@ -13,7 +12,6 @@ import 'package:lottie/lottie.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../utils/app-constant.dart';
-import 'wellcomeScreen.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -27,8 +25,8 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () {
-      Get.offAll(() => SignScreen());
+    Timer(const Duration(seconds: 3), () {
+      Get.offAll(() => const SignScreen());
       loggedin(context);
     });
   }
@@ -63,12 +61,12 @@ class _SplashscreenState extends State<Splashscreen> {
       var userData = await getUserDataController.getUserData(user!.uid);
 
       if (userData[0]['isAdmin'] == true) {
-        Get.offAll(() => AdminScreen());
+        Get.offAll(() => const AdminScreen());
       } else {
-        Get.offAll(() => NavigationMenu());
+        Get.offAll(() => const NavigationMenu());
       }
     } else {
-      Get.to(() => SignScreen());
+      Get.to(() => const SignScreen());
     }
   }
 
@@ -99,11 +97,11 @@ class _SplashscreenState extends State<Splashscreen> {
               height: Get.height * 1 / 3,
               width: Get.width,
               alignment: Alignment.bottomCenter,
-              margin: EdgeInsets.only(bottom: 20),
+              margin: const EdgeInsets.only(bottom: 20),
               child: (AppConstant.AppPoweredNy)
                   .text
                   .xl
-                  .textStyle(TextStyle(
+                  .textStyle(const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold))
                   .make(),

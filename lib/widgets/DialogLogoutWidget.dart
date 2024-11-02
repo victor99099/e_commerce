@@ -7,12 +7,12 @@ class CustomDialog extends StatelessWidget {
   final VoidCallback onConfirm;
 
   const CustomDialog({
-    Key? key,
+    super.key,
     required this.title,
     required this.content,
     required this.onCancel,
     required this.onConfirm,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +23,11 @@ class CustomDialog extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
       content: Text(
         content,
-        style: TextStyle(fontSize: 18),
+        style: const TextStyle(fontSize: 18),
       ),
       actions: <Widget>[
         TextButton(

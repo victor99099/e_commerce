@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application_1/controllers/ForgetPasswordController.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -22,17 +21,17 @@ class _AdminScreenState extends State<AdminScreen> {
         actions: [
           GestureDetector(
             onTap: () async {
-              final FirebaseAuth _auth = FirebaseAuth.instance;
+              final FirebaseAuth auth = FirebaseAuth.instance;
               GoogleSignIn googleSignIn = GoogleSignIn();
               
-              await _auth.signOut();
+              await auth.signOut();
               
               await googleSignIn.signOut();
 
               restartApp();
               // Get.offAll(()=>WellcomeScreen());
             },
-            child: Icon(Icons.logout).pOnly(right:10),
+            child: const Icon(Icons.logout).pOnly(right:10),
           )
         ],
         title: "ADMIN".text.make(),

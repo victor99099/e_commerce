@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/categories-model.dart';
 import 'package:flutter_application_1/screens/user-panel/ProductDetailScreen.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -13,7 +12,6 @@ import 'package:velocity_x/velocity_x.dart';
 import '../../controllers/CartItemsController.dart';
 import '../../models/cart-model.dart';
 import '../../models/product-model.dart';
-import 'singleCategoryScreen.dart';
 
 class AllFlashSaleWidget extends StatefulWidget {
   const AllFlashSaleWidget({super.key});
@@ -30,12 +28,12 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: currentTheme.colorScheme.secondary,
         title: "Flash Sale".text.color(Colors.white).bold.make(),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
             20.heightBox,
@@ -48,12 +46,12 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
-                    return Center(child: Text("Error"));
+                    return const Center(child: Text("Error"));
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Container(
+                    return SizedBox(
                       height: Get.height / 5,
-                      child: Center(
+                      child: const Center(
                         child: CupertinoActivityIndicator(),
                       ),
                     );
@@ -66,38 +64,38 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
 
                   if (snapshot.data != null) {
                     return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         mainAxisSpacing: 3,
                         crossAxisSpacing: 4,
                         childAspectRatio: 0.6,
                       ),
                       itemCount: snapshot.data!.docs.length,
-                      padding: EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(0),
                       itemBuilder: (context, index) {
                         final FlashSaleController controller =
                             Get.put(FlashSaleController());
                         final productData = snapshot.data!.docs[index];
                         ProductModel productModel = ProductModel(
-                            brandId: productData['brandId'],
-                            brandName: productData['brandName'],
-                            productColors: productData['productColors'],
-                            productId: productData['productId'],
-                            categoryId: productData['categoryId'],
-                            productName: productData['productName'],
-                            categoryName: productData['categoryName'],
-                            salePrice: productData['salePrice'],
-                            fullPrice: productData['fullPrice'],
-                            productImages: productData['productImages'],
-                            deliveryTime: productData['deliveryTime'],
-                            isSale: productData['isSale'],
-                            productDescription:
-                                productData['productDescription'],
-                            createdAt: productData['createdAt'],
-                            updatedAt: productData['updatedAt'],
-                            isBest: productData['isBest'],
-                            // productColor: productData['productColor']
-                            );
+                          brandId: productData['brandId'],
+                          brandName: productData['brandName'],
+                          productColors: productData['productColors'],
+                          productId: productData['productId'],
+                          categoryId: productData['categoryId'],
+                          productName: productData['productName'],
+                          categoryName: productData['categoryName'],
+                          salePrice: productData['salePrice'],
+                          fullPrice: productData['fullPrice'],
+                          productImages: productData['productImages'],
+                          deliveryTime: productData['deliveryTime'],
+                          isSale: productData['isSale'],
+                          productDescription: productData['productDescription'],
+                          createdAt: productData['createdAt'],
+                          updatedAt: productData['updatedAt'],
+                          isBest: productData['isBest'],
+                          // productColor: productData['productColor']
+                        );
 
                         // Fetch the product quantity when the widget is built
                         controller.fetchProductQuantity(productModel.productId);
@@ -106,27 +104,27 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
                           onTap: () => Get.to(() =>
                               ProductDetailScreen(productModel: productModel)),
                           child: Padding(
-                            padding: EdgeInsets.all(0),
+                            padding: const EdgeInsets.all(0),
                             child: Card(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
                               elevation: 5,
                               child: Container(
-                                padding: EdgeInsets.only(top: 10),
-                                margin: EdgeInsets.all(0),
+                                padding: const EdgeInsets.only(top: 10),
+                                margin: const EdgeInsets.all(0),
                                 decoration: BoxDecoration(
                                     color: currentTheme.colorScheme.surface,
                                     border:
                                         Border.all(color: Colors.transparent),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10))),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10))),
                                 child: Center(
                                   child: Stack(
                                     children: [
                                       Hero(
                                         tag: Key(productModel.productId),
                                         child: FillImageCard(
-                                          contentPadding: EdgeInsets.only(
+                                          contentPadding: const EdgeInsets.only(
                                               bottom: 0, top: 2),
                                           color:
                                               currentTheme.colorScheme.surface,
@@ -142,7 +140,7 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
                                             heightFactor: 0.2,
                                             child: Text(
                                               productModel.productName,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -151,15 +149,16 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
                                           ),
                                           footer: Container(
                                             width: double.infinity,
-                                            margin: EdgeInsets.all(0),
-                                            padding: EdgeInsets.only(top: 5),
+                                            margin: const EdgeInsets.all(0),
+                                            padding:
+                                                const EdgeInsets.only(top: 5),
                                             child: Column(
                                               children: [
                                                 Row(
                                                   children: [
                                                     Text(
                                                       "Rs ${productModel.salePrice}",
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           fontSize: 16,
                                                           fontWeight:
                                                               FontWeight.bold),
@@ -167,7 +166,7 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
                                                     5.widthBox,
                                                     Flexible(
                                                       child: Text(
-                                                        "${productModel.fullPrice}",
+                                                        productModel.fullPrice,
                                                         style: TextStyle(
                                                             fontSize: 16,
                                                             decoration:
@@ -184,7 +183,7 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
                                                 ),
                                                 Container(
                                                   // alignment: Alignment.bottomLeft,
-                                                  margin: EdgeInsets.only(
+                                                  margin: const EdgeInsets.only(
                                                       right: 20, top: 5),
                                                   height: Get.height * 0.045,
                                                   child: Row(
@@ -192,16 +191,18 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
                                                         MainAxisAlignment.start,
                                                     children: [
                                                       Container(
-                                                        margin:
-                                                            EdgeInsets.all(0),
+                                                        margin: const EdgeInsets
+                                                            .all(0),
                                                         padding:
-                                                            EdgeInsets.all(0),
+                                                            const EdgeInsets
+                                                                .all(0),
                                                         width: Get.width / 10,
                                                         height:
                                                             Get.height * 0.045,
                                                         child: Card(
                                                           margin:
-                                                              EdgeInsets.all(1),
+                                                              const EdgeInsets
+                                                                  .all(1),
                                                           color: currentTheme
                                                               .colorScheme
                                                               .secondary,
@@ -222,7 +223,7 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
                                                                 child: "-"
                                                                     .text
                                                                     .bold
-                                                                    .textStyle(TextStyle(
+                                                                    .textStyle(const TextStyle(
                                                                         fontSize:
                                                                             8))
                                                                     .color(currentTheme
@@ -233,16 +234,18 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
                                                         ),
                                                       ),
                                                       Container(
-                                                        margin:
-                                                            EdgeInsets.all(0),
+                                                        margin: const EdgeInsets
+                                                            .all(0),
                                                         padding:
-                                                            EdgeInsets.all(0),
+                                                            const EdgeInsets
+                                                                .all(0),
                                                         width: Get.width / 10,
                                                         height:
                                                             Get.height * 0.045,
                                                         child: Card(
                                                           margin:
-                                                              EdgeInsets.all(1),
+                                                              const EdgeInsets
+                                                                  .all(1),
                                                           color: currentTheme
                                                               .colorScheme
                                                               .secondary,
@@ -256,6 +259,7 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
                                                             onPressed:
                                                                 () async {
                                                               await checkProductExistance(
+                                                                currentTheme: currentTheme,
                                                                   uId:
                                                                       user!.uid,
                                                                   productModel:
@@ -278,7 +282,7 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
                                                                         .connectionState ==
                                                                     ConnectionState
                                                                         .waiting) {
-                                                                  return Center(
+                                                                  return const Center(
                                                                       child:
                                                                           CircularProgressIndicator());
                                                                 }
@@ -293,9 +297,9 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
                                                                         0;
                                                                 return Container(
                                                                   padding:
-                                                                      EdgeInsets
+                                                                      const EdgeInsets
                                                                           .all(
-                                                                              0),
+                                                                          0),
                                                                   child: Text(
                                                                     quantity
                                                                         .toString(),
@@ -332,7 +336,7 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
                                             color: currentTheme
                                                 .colorScheme.surface,
                                             child: IconButton(
-                                              icon: Icon(Iconsax.heart),
+                                              icon: const Icon(Iconsax.heart),
                                               color: currentTheme
                                                   .colorScheme.onPrimary,
                                               onPressed: () {
@@ -366,7 +370,7 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
   Future<int> checkProductExistance(
       {required String uId,
       int quantityIncrement = 1,
-      required ProductModel productModel}) async {
+      required ProductModel productModel, required dynamic currentTheme}) async {
     final DocumentReference documentReference = FirebaseFirestore.instance
         .collection("cart")
         .doc(uId)
@@ -415,6 +419,13 @@ class _AllFlashSaleWidgetState extends State<AllFlashSaleWidget> {
               ? productModel.salePrice.replaceAll(',', '')
               : productModel.fullPrice.replaceAll(',', '')));
       await documentReference.set(cartModel.toMap());
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          'Profile picture updated',
+          style: TextStyle(color: currentTheme.colorScheme.surface),
+        ),
+        backgroundColor: currentTheme.colorScheme.onPrimary,
+      ));
       print("Product Added");
       return 1;
     }

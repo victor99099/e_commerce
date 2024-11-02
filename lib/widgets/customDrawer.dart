@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/controllers/ForgetPasswordController.dart';
 import 'package:flutter_application_1/screens/auth-ui/wellcomeScreen.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -23,7 +22,7 @@ class _MyDrawerState extends State<MyDrawer> {
       padding: EdgeInsets.only(top: Get.height/25),
       child: Drawer(
         backgroundColor: currentTheme.cardColor,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(20.0),
             bottomRight: Radius.circular(20.0)
@@ -46,7 +45,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
               ),
             ),
-            Divider(
+            const Divider(
               indent: 10,
               endIndent: 10,
               thickness: 2,
@@ -60,8 +59,8 @@ class _MyDrawerState extends State<MyDrawer> {
                 textColor: Colors.white,
                 titleAlignment: ListTileTitleAlignment.center,
                 title: "Home".text.xl2.bold.make(),
-                leading: Icon(CupertinoIcons.home),
-                trailing: Icon(CupertinoIcons.arrow_right_square_fill,size: 30).pOnly(top: 4,right: 10),
+                leading: const Icon(CupertinoIcons.home),
+                trailing: const Icon(CupertinoIcons.arrow_right_square_fill,size: 30).pOnly(top: 4,right: 10),
               ),
             ),
             Padding(
@@ -72,8 +71,8 @@ class _MyDrawerState extends State<MyDrawer> {
                 textColor: Colors.white,
                 titleAlignment: ListTileTitleAlignment.center,
                 title: "Products".text.xl2.bold.make(),
-                leading: Icon(CupertinoIcons.shopping_cart),
-                trailing: Icon(CupertinoIcons.arrow_right_square_fill,size: 30).pOnly(top: 4,right: 10),
+                leading: const Icon(CupertinoIcons.shopping_cart),
+                trailing: const Icon(CupertinoIcons.arrow_right_square_fill,size: 30).pOnly(top: 4,right: 10),
               ),
             ),
             Padding(
@@ -84,8 +83,8 @@ class _MyDrawerState extends State<MyDrawer> {
                 textColor: Colors.white,
                 titleAlignment: ListTileTitleAlignment.center,
                 title: "Orders".text.xl2.bold.make(),
-                leading: Icon(CupertinoIcons.bag),
-                trailing: Icon(CupertinoIcons.arrow_right_square_fill,size: 30).pOnly(top: 4,right: 10),
+                leading: const Icon(CupertinoIcons.bag),
+                trailing: const Icon(CupertinoIcons.arrow_right_square_fill,size: 30).pOnly(top: 4,right: 10),
               ),
             ),
             Padding(
@@ -96,8 +95,8 @@ class _MyDrawerState extends State<MyDrawer> {
                 textColor: Colors.white,
                 titleAlignment: ListTileTitleAlignment.center,
                 title: "Contact".text.xl2.bold.make(),
-                leading: Icon(CupertinoIcons.phone),
-                trailing: Icon(CupertinoIcons.arrow_right_square_fill,size: 30).pOnly(top: 4,right: 10),
+                leading: const Icon(CupertinoIcons.phone),
+                trailing: const Icon(CupertinoIcons.arrow_right_square_fill,size: 30).pOnly(top: 4,right: 10),
               ),
             ),
             Padding(
@@ -106,22 +105,22 @@ class _MyDrawerState extends State<MyDrawer> {
               vertical: 5.0),
               child: ListTile(
               onTap: () async {
-                final FirebaseAuth _auth = FirebaseAuth.instance;
+                final FirebaseAuth auth = FirebaseAuth.instance;
                 GoogleSignIn googleSignIn = GoogleSignIn();
               
-                await _auth.signOut();
+                await auth.signOut();
               
                 await googleSignIn.signOut();
 
-                Get.offAll(()=>WellcomeScreen());
+                Get.offAll(()=>const WellcomeScreen());
 
               },
                 iconColor: Colors.white,
                 textColor: Colors.white,
                 titleAlignment: ListTileTitleAlignment.center,
                 title: "Log Out".text.xl2.bold.make(),
-                leading: Icon(Icons.logout),
-                trailing: Icon(CupertinoIcons.arrow_right_square_fill,size: 30).pOnly(top: 4,right: 10),
+                leading: const Icon(Icons.logout),
+                trailing: const Icon(CupertinoIcons.arrow_right_square_fill,size: 30).pOnly(top: 4,right: 10),
               ),
             ),
           ],

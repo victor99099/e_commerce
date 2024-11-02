@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/CartPriceController.dart';
@@ -10,14 +9,11 @@ import 'package:flutter_application_1/controllers/deviceTokenController.dart';
 import 'package:flutter_application_1/models/order-model.dart';
 import 'package:flutter_application_1/models/product-model.dart';
 import 'package:flutter_application_1/screens/user-panel/ProductDetailScreen.dart';
-import 'package:flutter_application_1/screens/user-panel/mainScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/navigationMenu.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/list_notifier.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:image_card/image_card.dart';
 import 'package:intl/intl.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
@@ -28,11 +24,11 @@ import 'package:velocity_x/velocity_x.dart';
 import '../../controllers/validateInfoController.dart';
 import '../../models/cart-model.dart';
 import '../../models/user-model.dart';
-import 'OrderDetailScreen.dart';
+import '../../widgets/DialogLogoutWidget.dart';
 import 'PersonalInfoScreen.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  String total = '';
+  final String total;
   CheckoutScreen({super.key, required this.total});
 
   @override
@@ -40,7 +36,7 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  Razorpay _razorpay = Razorpay();
+  final Razorpay _razorpay = Razorpay();
   final UserValidationController validationController =
       Get.put(UserValidationController());
 
@@ -81,7 +77,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 user: user,
                 noteToRider: noteToRider),
             PaymentOptions(currentTheme: currentTheme, payOption: payOption),
-            Container(
+            SizedBox(
               width: Get.width / 1.1,
               height: Get.height / 2.6,
               child: Card(
@@ -114,12 +110,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         children: [
                           "subTotal"
                               .text
-                              .textStyle(TextStyle(fontSize: 9))
+                              .textStyle(const TextStyle(fontSize: 9))
                               .color(currentTheme.colorScheme.tertiaryFixed)
                               .make(),
                           ("Rs ${widget.total}")
                               .text
-                              .textStyle(TextStyle(fontSize: 11))
+                              .textStyle(const TextStyle(fontSize: 11))
                               .make()
                               .pOnly(right: 30)
                         ],
@@ -129,12 +125,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         children: [
                           "Delivery Fee"
                               .text
-                              .textStyle(TextStyle(fontSize: 9))
+                              .textStyle(const TextStyle(fontSize: 9))
                               .color(currentTheme.colorScheme.tertiaryFixed)
                               .make(),
                           "Rs 200.0"
                               .text
-                              .textStyle(TextStyle(fontSize: 11))
+                              .textStyle(const TextStyle(fontSize: 11))
                               .make()
                               .pOnly(right: 30)
                         ],
@@ -144,12 +140,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         children: [
                           "TAX Fee"
                               .text
-                              .textStyle(TextStyle(fontSize: 9))
+                              .textStyle(const TextStyle(fontSize: 9))
                               .color(currentTheme.colorScheme.tertiaryFixed)
                               .make(),
                           ("Rs ${(double.parse(widget.total) * 0.015).toStringAsFixed(1)}")
                               .text
-                              .textStyle(TextStyle(fontSize: 11))
+                              .textStyle(const TextStyle(fontSize: 11))
                               .make()
                               .pOnly(right: 30)
                         ],
@@ -159,20 +155,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         children: [
                           "Order Total"
                               .text
-                              .textStyle(TextStyle(fontSize: 16))
+                              .textStyle(const TextStyle(fontSize: 16))
                               .color(currentTheme.colorScheme.tertiaryFixed)
                               .make(),
                           ("Rs ${((double.parse(widget.total)) - (double.parse(widget.total) * 0.015) - 200).toStringAsFixed(1)} ")
                               .text
                               .semiBold
-                              .textStyle(TextStyle(fontSize: 16))
+                              .textStyle(const TextStyle(fontSize: 16))
                               .make()
                               .pOnly(right: 27)
                         ],
                       ).pOnly(left: 20, top: 20),
                       Container(
-                        margin: EdgeInsets.all(0),
-                        padding: EdgeInsets.all(0),
+                        margin: const EdgeInsets.all(0),
+                        padding: const EdgeInsets.all(0),
                         width: Get.width - 10,
                         height: Get.height * 0.07,
                         child: Card(
@@ -182,56 +178,80 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           elevation: 5,
                           child: TextButton(
                             onPressed: () async {
-                              final amount = ((double.parse(widget.total)) -
-                                  (double.parse(widget.total) * 0.015) -
-                                  200);
-                              if (validationController.isInfoComplete.value) {
-                                if (payOption.value == 'Card') {
-                                  var options = {
-                                    'key': 'rzp_test_xVMqJrZKp1cCoE',
-                                    'amount': amount * 100,
-                                    'name': user!.displayName,
-                                    'description': '',
-                                    'currency': 'PKR',
-                                    'prefill': {
-                                      'contact': user.phoneNumber,
-                                      'email': user.email
-                                    }
-                                  };
-                                  _razorpay.open(options);
-                                  _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
-                                      (PaymentSuccessResponse response) {
-                                    _handlePaymentSuccess(
-                                        response,
-                                        noteToRider.text,
-                                        context,
-                                        payOption.value,
-                                        amount);
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return CustomDialog(
+                                        title: "Place Order",
+                                        content: "Are you sure ?",
+                                        onCancel: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        onConfirm: () async {
+                                          Navigator.of(context).pop();
+
+                                          final amount =
+                                              ((double.parse(widget.total)) -
+                                                  (double.parse(widget.total) *
+                                                      0.015) -
+                                                  200);
+                                          if (validationController
+                                              .isInfoComplete.value) {
+                                            if (payOption.value == 'Card') {
+                                              var options = {
+                                                'key':
+                                                    'rzp_test_xVMqJrZKp1cCoE',
+                                                'amount': amount * 100,
+                                                'name': user!.displayName,
+                                                'description': '',
+                                                'currency': 'PKR',
+                                                'prefill': {
+                                                  'contact': user.phoneNumber,
+                                                  'email': user.email
+                                                }
+                                              };
+                                              _razorpay.open(options);
+                                              _razorpay.on(
+                                                  Razorpay
+                                                      .EVENT_PAYMENT_SUCCESS,
+                                                  (PaymentSuccessResponse
+                                                      response) {
+                                                _handlePaymentSuccess(
+                                                    response,
+                                                    noteToRider.text,
+                                                    context,
+                                                    payOption.value,
+                                                    amount);
+                                              });
+                                              _razorpay.on(
+                                                  Razorpay.EVENT_PAYMENT_ERROR,
+                                                  _handlePaymentErrorWrapper);
+                                              _razorpay.on(
+                                                  Razorpay
+                                                      .EVENT_EXTERNAL_WALLET,
+                                                  _handleExternalWallet);
+                                            } else {
+                                              placeOrder(
+                                                  noteToRider: noteToRider.text,
+                                                  context: context,
+                                                  payOption: payOption.value,
+                                                  amount: amount);
+                                            }
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content: Text(
+                                                'Please provide the complete address details',
+                                                style: TextStyle(
+                                                    color: currentTheme
+                                                        .colorScheme.surface),
+                                              ),
+                                              backgroundColor: currentTheme
+                                                  .colorScheme.onPrimary,
+                                            ));
+                                          }
+                                        });
                                   });
-                                  _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
-                                      _handlePaymentErrorWrapper);
-                                  _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
-                                      _handleExternalWallet);
-                                } else {
-                                  placeOrder(
-                                      noteToRider: noteToRider.text,
-                                      context: context,
-                                      payOption: payOption.value,
-                                      amount: amount);
-                                }
-                              } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text(
-                                    'Please provide the complete address details',
-                                    style: TextStyle(
-                                        color:
-                                            currentTheme.colorScheme.surface),
-                                  ),
-                                  backgroundColor:
-                                      currentTheme.colorScheme.onPrimary,
-                                ));
-                              }
                             },
                             child: Center(
                                 child: "Place Order"
@@ -294,7 +314,7 @@ class PaymentOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: Get.width / 1.1,
       height: Get.height / 5.5,
       child: Card(
@@ -352,7 +372,7 @@ class PaymentOptions extends StatelessWidget {
                                   ),
                                   "Cash"
                                       .text
-                                      .textStyle(TextStyle(fontSize: 10))
+                                      .textStyle(const TextStyle(fontSize: 10))
                                       .color(payOption.value == 'Cash'
                                           ? currentTheme.colorScheme.surface
                                           : currentTheme
@@ -396,7 +416,7 @@ class PaymentOptions extends StatelessWidget {
                                   ),
                                   "Card"
                                       .text
-                                      .textStyle(TextStyle(fontSize: 10))
+                                      .textStyle(const TextStyle(fontSize: 10))
                                       .color(payOption.value == 'Card'
                                           ? currentTheme.colorScheme.surface
                                           : currentTheme
@@ -422,7 +442,7 @@ class PaymentOptions extends StatelessWidget {
 }
 
 class UserDetails extends StatelessWidget {
-  TextEditingController noteToRider = TextEditingController();
+  final TextEditingController noteToRider;
   UserDetails(
       {super.key,
       required this.currentTheme,
@@ -439,7 +459,7 @@ class UserDetails extends StatelessWidget {
       validationController.validateUserInfo(user!.uid);
     }
 
-    return Container(
+    return SizedBox(
       width: Get.width / 1.1,
       height: Get.height / 2.5,
       child: Card(
@@ -459,12 +479,12 @@ class UserDetails extends StatelessWidget {
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   print(snapshot);
                   if (snapshot.hasError) {
-                    return Center(child: Text("Error"));
+                    return const Center(child: Text("Error"));
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Container(
+                    return SizedBox(
                       height: Get.height / 5,
-                      child: Center(
+                      child: const Center(
                         child: CupertinoActivityIndicator(),
                       ),
                     );
@@ -553,7 +573,7 @@ class UserDetails extends StatelessWidget {
                                           .colorScheme.tertiaryFixed)
                                       .make(),
                                   userModel.username.text
-                                      .textStyle(TextStyle(fontSize: 10))
+                                      .textStyle(const TextStyle(fontSize: 10))
                                       .make()
                                       .pOnly(left: 62),
                                 ],
@@ -567,7 +587,7 @@ class UserDetails extends StatelessWidget {
                                           .colorScheme.tertiaryFixed)
                                       .make(),
                                   userModel.phone.text
-                                      .textStyle(TextStyle(fontSize: 10))
+                                      .textStyle(const TextStyle(fontSize: 10))
                                       .make()
                                       .pOnly(left: 38),
                                 ],
@@ -581,7 +601,7 @@ class UserDetails extends StatelessWidget {
                                           .colorScheme.tertiaryFixed)
                                       .make(),
                                   userModel.city.text
-                                      .textStyle(TextStyle(fontSize: 10))
+                                      .textStyle(const TextStyle(fontSize: 10))
                                       .make()
                                       .pOnly(left: 77),
                                 ],
@@ -595,7 +615,7 @@ class UserDetails extends StatelessWidget {
                                           .colorScheme.tertiaryFixed)
                                       .make(),
                                   userModel.street.text
-                                      .textStyle(TextStyle(fontSize: 10))
+                                      .textStyle(const TextStyle(fontSize: 10))
                                       .make()
                                       .pOnly(left: 63),
                                 ],
@@ -610,7 +630,7 @@ class UserDetails extends StatelessWidget {
                                       .make(),
                                   userModel.userAddress.text
                                       .overflow(TextOverflow.fade)
-                                      .textStyle(TextStyle(fontSize: 10))
+                                      .textStyle(const TextStyle(fontSize: 10))
                                       .make()
                                       .pOnly(left: 47)
                                       .w(Get.width * 0.58),
@@ -618,7 +638,7 @@ class UserDetails extends StatelessWidget {
                               ).pOnly(top: 5),
                               TextFormField(
                                 controller: noteToRider,
-                                style: TextStyle(fontSize: 10),
+                                style: const TextStyle(fontSize: 10),
                                 maxLines: 2,
                                 decoration: InputDecoration(
                                     labelText: "Note To Rider",
@@ -682,12 +702,12 @@ class CartItems extends StatelessWidget {
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
-          return Center(child: Text("Error"));
+          return const Center(child: Text("Error"));
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
+          return SizedBox(
             height: Get.height / 5,
-            child: Center(
+            child: const Center(
               child: CupertinoActivityIndicator(),
             ),
           );
@@ -700,7 +720,7 @@ class CartItems extends StatelessWidget {
 
         if (snapshot.data != null) {
           return Padding(
-            padding: EdgeInsets.only(left: 5, right: 5),
+            padding: const EdgeInsets.only(left: 5, right: 5),
             child: Column(
               children: [
                 ListView.builder(
@@ -756,18 +776,18 @@ class CartItems extends StatelessWidget {
                               content: Padding(
                                 padding: const EdgeInsets.all(0),
                                 child: Container(
-                                  margin: EdgeInsets.all(0),
+                                  margin: const EdgeInsets.all(0),
                                   height: Get.height / 6.5,
-                                  child: Row(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.red,
+                                  ),
+                                  child: const Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(Icons.delete, color: Colors.white),
                                       SizedBox(width: 8),
                                     ],
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.red,
                                   ),
                                 ),
                               ),
@@ -799,7 +819,7 @@ class CartItems extends StatelessWidget {
                                         image: cartModel.productImages[0]),
                                     Expanded(
                                       child: Padding(
-                                        padding: EdgeInsets.all(0),
+                                        padding: const EdgeInsets.all(0),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -807,8 +827,8 @@ class CartItems extends StatelessWidget {
                                               MainAxisAlignment.center,
                                           children: [
                                             cartModel.productName.text.bold
-                                                .textStyle(
-                                                    TextStyle(fontSize: 11))
+                                                .textStyle(const TextStyle(
+                                                    fontSize: 11))
                                                 .overflow(TextOverflow.ellipsis)
                                                 .color(currentTheme
                                                     .colorScheme.onPrimary)
@@ -825,11 +845,12 @@ class CartItems extends StatelessWidget {
                                                             .connectionState ==
                                                         ConnectionState
                                                             .waiting) {
-                                                      return CircularProgressIndicator();
+                                                      return const CircularProgressIndicator();
                                                     } else if (snapshot
                                                         .hasError) {
                                                       print(snapshot.error);
-                                                      return Icon(Icons.error);
+                                                      return const Icon(
+                                                          Icons.error);
                                                     } else {
                                                       return CachedNetworkImage(
                                                         imageUrl:
@@ -838,10 +859,11 @@ class CartItems extends StatelessWidget {
                                                         height: 16,
                                                         placeholder: (context,
                                                                 url) =>
-                                                            CircularProgressIndicator(),
+                                                            const CircularProgressIndicator(),
                                                         errorWidget: (context,
                                                                 url, error) =>
-                                                            Icon(Icons.error),
+                                                            const Icon(
+                                                                Icons.error),
                                                       );
                                                     }
                                                   },
@@ -849,21 +871,19 @@ class CartItems extends StatelessWidget {
                                                 Container(
                                                     alignment:
                                                         Alignment.centerLeft,
-                                                    padding: EdgeInsets.only(
-                                                        left: 2),
-                                                    child:
-                                                        "${cartModel.brandName}"
-                                                            .text
-                                                            .textStyle(
-                                                                TextStyle(
-                                                                    fontSize:
-                                                                        10))
-                                                            .align(
-                                                                TextAlign.left)
-                                                            .color(currentTheme
-                                                                .colorScheme
-                                                                .tertiary)
-                                                            .make()),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 2),
+                                                    child: cartModel
+                                                        .brandName.text
+                                                        .textStyle(
+                                                            const TextStyle(
+                                                                fontSize: 10))
+                                                        .align(TextAlign.left)
+                                                        .color(currentTheme
+                                                            .colorScheme
+                                                            .tertiary)
+                                                        .make()),
                                                 Image.asset(
                                                   'assets/images/verifiedicon.png', // Replace with your icon path
                                                   width: 8,
@@ -875,8 +895,8 @@ class CartItems extends StatelessWidget {
                                             4.heightBox,
                                             "Color : ${cartModel.productColor}"
                                                 .text
-                                                .textStyle(
-                                                    TextStyle(fontSize: 10))
+                                                .textStyle(const TextStyle(
+                                                    fontSize: 10))
                                                 .light
                                                 .overflow(TextOverflow.ellipsis)
                                                 .color(currentTheme
@@ -890,21 +910,23 @@ class CartItems extends StatelessWidget {
                                                       .spaceBetween,
                                               children: [
                                                 Container(
-                                                  margin: EdgeInsets.all(0),
+                                                  margin:
+                                                      const EdgeInsets.all(0),
                                                   // height: Get.height * 0.05,
                                                   child:
                                                       "Rs ${cartModel.productTotalPrice}"
                                                           .text
                                                           .bold
-                                                          .textStyle(TextStyle(
-                                                              fontSize: 10))
+                                                          .textStyle(
+                                                              const TextStyle(
+                                                                  fontSize: 10))
                                                           .make(),
                                                 ),
                                                 "Qty : ${cartModel.productQuantity}"
                                                     .text
                                                     .bold
-                                                    .textStyle(
-                                                        TextStyle(fontSize: 10))
+                                                    .textStyle(const TextStyle(
+                                                        fontSize: 10))
                                                     .make()
                                                     .pOnly(right: 20)
                                               ],
@@ -1050,7 +1072,7 @@ void placeOrder(
 
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('cart')
-        .doc(user!.uid)
+        .doc(user.uid)
         .collection('cartOrders')
         .get();
 
@@ -1128,7 +1150,7 @@ void placeOrder(
 
         await FirebaseFirestore.instance
             .collection('cart')
-            .doc(user!.uid)
+            .doc(user.uid)
             .collection('cartOrders')
             .doc((orderModel.productId).toString())
             .delete();
@@ -1144,7 +1166,7 @@ void placeOrder(
     ));
 
     EasyLoading.dismiss();
-    Get.off(() => NavigationMenu());
+    Get.off(() => const NavigationMenu());
   } catch (e) {
     print("error in placing order :  $e");
     EasyLoading.dismiss();
@@ -1214,7 +1236,7 @@ Future<void> sendEmailAutomatically({
   try {
     // Send the email
     final sendReport = await send(message, smtpServer);
-    print('Message sent: ' + sendReport.toString());
+    print('Message sent: $sendReport');
   } on MailerException catch (e) {
     print('Message not sent. $e');
     for (var p in e.problems) {

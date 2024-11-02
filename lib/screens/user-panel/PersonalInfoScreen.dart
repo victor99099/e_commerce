@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/ChangeInfoController.dart';
 import 'package:flutter_application_1/models/user-model.dart';
 import 'package:flutter_application_1/screens/user-panel/Profilescreen.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../widgets/DialogLogoutWidget.dart';
@@ -45,7 +43,7 @@ class UpdateUserInfoScreen extends StatelessWidget {
         iconTheme: IconThemeData(color: currentTheme.colorScheme.tertiary),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             _buildTextField(
@@ -54,7 +52,7 @@ class UpdateUserInfoScreen extends StatelessWidget {
               icon: Icons.person,
               theme: currentTheme,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             _buildTextField(
               controller: phoneController,
               labelText: 'Phone No',
@@ -62,21 +60,21 @@ class UpdateUserInfoScreen extends StatelessWidget {
               theme: currentTheme,
               keyboardType: TextInputType.phone,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             _buildTextField(
               controller: cityController,
               labelText: 'City',
               icon: Icons.terrain,
               theme: currentTheme,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             _buildTextField(
               controller: streetController,
               labelText: 'Street',
               icon: Icons.traffic,
               theme: currentTheme,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             _buildTextArea(
               controller: addressController,
               labelText: 'Address',
@@ -87,7 +85,7 @@ class UpdateUserInfoScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
           onPressed: () {
             showDialog(
@@ -103,7 +101,7 @@ class UpdateUserInfoScreen extends StatelessWidget {
                         cityController.text = userModel.city;
                         addressController.text = userModel.userAddress;
                         streetController.text = userModel.street;
-                        Get.off(() => ProfileScreen());
+                        Get.off(() => const ProfileScreen());
                       },
                       onConfirm: () async {
                         Navigator.of(context).pop();
@@ -122,7 +120,7 @@ class UpdateUserInfoScreen extends StatelessWidget {
                           ),
                           backgroundColor: currentTheme.colorScheme.onPrimary,
                         ));
-                        Get.off(() => ProfileScreen());
+                        Get.off(() => const ProfileScreen());
                       });
                 });
           },
@@ -155,7 +153,7 @@ class UpdateUserInfoScreen extends StatelessWidget {
         labelText: labelText,
         labelStyle: TextStyle(color: theme.colorScheme.tertiaryFixed),
         prefixIcon: Icon(icon, color: theme.colorScheme.onPrimary),
-        enabledBorder: UnderlineInputBorder(
+        enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.grey),
         ),
         focusedBorder: UnderlineInputBorder(
@@ -179,7 +177,7 @@ class UpdateUserInfoScreen extends StatelessWidget {
         labelText: labelText,
         labelStyle: TextStyle(color: theme.colorScheme.tertiaryFixed),
         prefixIcon: Icon(icon, color: theme.colorScheme.onPrimary),
-        enabledBorder: UnderlineInputBorder(
+        enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.grey),
         ),
         focusedBorder: UnderlineInputBorder(

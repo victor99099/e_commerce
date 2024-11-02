@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SettingHeading extends StatelessWidget {
@@ -8,7 +7,7 @@ class SettingHeading extends StatelessWidget {
   final String headingSubtitle;
   final VoidCallback onTap;
   final IconData icon;
-  SettingHeading(
+  const SettingHeading(
       {super.key,
       required this.headingTitle,
       required this.headingSubtitle,
@@ -22,9 +21,9 @@ class SettingHeading extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: Get.height/10,
-        margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+        margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -41,7 +40,7 @@ class SettingHeading extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: currentTheme.colorScheme.tertiary),
                   ),
-                  Container(
+                  SizedBox(
                     width: Get.width/1.4,
                     child: Text(
                       headingSubtitle,

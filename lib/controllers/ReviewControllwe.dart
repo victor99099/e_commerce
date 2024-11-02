@@ -15,7 +15,7 @@ class ProductReviewController extends GetxController {
         .get();
 
     return querySnapshot.docs.map((doc) {
-      return ProductReviewModel.fromMap(doc.data() as Map<String, dynamic>);
+      return ProductReviewModel.fromMap(doc.data());
     }).toList();
   }
 

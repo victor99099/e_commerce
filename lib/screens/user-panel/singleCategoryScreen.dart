@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../models/categories-model.dart';
 
 // ignore: must_be_immutable
 class SingleCategoryScreen extends StatefulWidget {
@@ -27,12 +26,12 @@ class _AllCategoriesScreenState extends State<SingleCategoryScreen> {
     final currentTheme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: currentTheme.colorScheme.secondary,
         title: widget.categoryTitle.text.color(Colors.white).bold.make(),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
             20.heightBox,
@@ -45,12 +44,12 @@ class _AllCategoriesScreenState extends State<SingleCategoryScreen> {
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
-                    return Center(child: Text("Error"));
+                    return const Center(child: Text("Error"));
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Container(
+                    return SizedBox(
                       height: Get.height / 5,
-                      child: Center(
+                      child: const Center(
                         child: CupertinoActivityIndicator(),
                       ),
                     );
@@ -63,7 +62,7 @@ class _AllCategoriesScreenState extends State<SingleCategoryScreen> {
 
                   if (snapshot.data != null) {
                     return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         mainAxisSpacing: 3,
                         crossAxisSpacing: 4,
@@ -103,14 +102,14 @@ class _AllCategoriesScreenState extends State<SingleCategoryScreen> {
                               ),
                               elevation: 5,
                               child: Container(
-                                padding: EdgeInsets.only(top: 10),
-                                margin: EdgeInsets.all(0),
+                                padding: const EdgeInsets.only(top: 10),
+                                margin: const EdgeInsets.all(0),
                                 decoration: BoxDecoration(
                                   color: currentTheme.colorScheme.primary,
                                   border: Border.all(
                                     color: Colors.transparent,
                                   ),
-                                  borderRadius: BorderRadius.all(
+                                  borderRadius: const BorderRadius.all(
                                     Radius.circular(10),
                                   ),
                                 ),
@@ -119,7 +118,7 @@ class _AllCategoriesScreenState extends State<SingleCategoryScreen> {
                                     tag: Key(productModel.productId),
                                     child: FillImageCard(
                                       contentPadding:
-                                          EdgeInsets.only(bottom: 0, top: 2),
+                                          const EdgeInsets.only(bottom: 0, top: 2),
                                       color: currentTheme.colorScheme.primary,
                                       borderRadius: 20,
                                       width: Get.width / 2.6,
@@ -132,7 +131,7 @@ class _AllCategoriesScreenState extends State<SingleCategoryScreen> {
                                         heightFactor: 0.2,
                                         child: Text(
                                           productModel.productName,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 11,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -140,20 +139,20 @@ class _AllCategoriesScreenState extends State<SingleCategoryScreen> {
                                         ),
                                       ),
                                       footer: Container(
-                                        padding: EdgeInsets.only(top: 5),
+                                        padding: const EdgeInsets.only(top: 5),
                                         height: 22,
                                         child: Row(
                                           children: [
                                             Text(
                                               "Rs ${productModel.salePrice}",
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 11,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            SizedBox(width: 2),
+                                            const SizedBox(width: 2),
                                             Text(
-                                              "${productModel.fullPrice}",
+                                              productModel.fullPrice,
                                               style: TextStyle(
                                                 fontSize: 11,
                                                 decoration:

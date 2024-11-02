@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utils/app-constant.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SettingHeadingSwitch extends StatelessWidget {
@@ -10,7 +9,7 @@ class SettingHeadingSwitch extends StatelessWidget {
   final ValueChanged onTap;
   final IconData icon;
   final bool value;
-  SettingHeadingSwitch(
+  const SettingHeadingSwitch(
       {super.key,
       required this.headingTitle,
       required this.headingSubtitle,
@@ -23,9 +22,9 @@ class SettingHeadingSwitch extends StatelessWidget {
     final currentTheme = Theme.of(context);
     return Container(
       height: Get.height / 10,
-      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+      margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
       child: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -45,7 +44,7 @@ class SettingHeadingSwitch extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: currentTheme.colorScheme.tertiary),
                 ),
-                Container(
+                SizedBox(
                   width: Get.width / 1.8,
                   child: Text(
                     headingSubtitle,

@@ -19,9 +19,9 @@ class FlashSaleController extends GetxController {
         .collection('cartOrders')
         .get();
 
-    snapshot.docs.forEach((doc) {
+    for (var doc in snapshot.docs) {
       productQuantities[doc.id] = doc['productQuantity'] as int;
-    });
+    }
   }
 
   // Fetch the quantity of a specific product from Firestore
@@ -76,7 +76,7 @@ class FlashSaleController extends GetxController {
 
         if (currentQuantity > 1) {
           final DocumentSnapshot snapshot = await documentReference.get();
-          final data = snapshot!.data()! as Map<String, dynamic>;
+          final data = snapshot.data()! as Map<String, dynamic>;
           double salePrice = data['productTotalPrice'] as double;
 
           await documentReference.update({

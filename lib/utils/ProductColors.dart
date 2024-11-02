@@ -52,13 +52,13 @@ class ColorUtils {
       case 'YELLOW ACCENT':
         return Colors.yellowAccent;
       case 'ROSE GOLD':
-        return Color(0xFFDAB8C1); // Custom color for Rose Gold
+        return const Color(0xFFDAB8C1); // Custom color for Rose Gold
       case 'BRONZE':
-        return Color(0xFFCD7F32); // Custom color for Bronze
+        return const Color(0xFFCD7F32); // Custom color for Bronze
       case 'SILVER':
-        return Color(0xFFC0C0C0); // Custom color for Silver
+        return const Color(0xFFC0C0C0); // Custom color for Silver
       case 'GOLD':
-        return Color(0xFFFFD700); // Custom color for Gold
+        return const Color(0xFFFFD700); // Custom color for Gold
       // Add more colors as needed
       default:
         return Colors.grey; // Default color if not found

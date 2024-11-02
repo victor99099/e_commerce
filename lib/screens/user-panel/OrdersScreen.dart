@@ -2,11 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/order-model.dart';
 import 'package:flutter_application_1/screens/user-panel/OrderDetailScreen.dart';
-import 'package:flutter_application_1/screens/user-panel/ProductDetailScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/SearchScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/cartScreen.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
@@ -18,8 +16,6 @@ import 'package:velocity_x/velocity_x.dart';
 import '../../controllers/CartItemsController.dart';
 import '../../controllers/CartPriceController.dart';
 import '../../controllers/ReviewControllwe.dart';
-import '../../models/cart-model.dart';
-import '../../models/product-model.dart';
 import 'ReviewSheet.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -43,29 +39,29 @@ class _OrderScreenState extends State<OrderScreen> {
           actions: [
             InkWell(
                 onTap: () => Get.to(() => SearchScreen()),
-                child: Icon(Iconsax.search_normal).pOnly(right: 10)),
+                child: const Icon(Iconsax.search_normal).pOnly(right: 10)),
             InkWell(
-              onTap: () => Get.to(() => CartScreen()),
+              onTap: () => Get.to(() => const CartScreen()),
               child: StreamBuilder<int>(
                 stream: cartItemsController
                     .getCartItemsCount(), // Fetch the cart item count
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(
-                      padding: EdgeInsets.only(right: 20),
-                      child: Icon(CupertinoIcons.cart),
+                      padding: const EdgeInsets.only(right: 20),
+                      child: const Icon(CupertinoIcons.cart),
                     ); // Display an empty cart icon or a loading indicator
                   } else if (snapshot.hasError) {
                     return Container(
-                      padding: EdgeInsets.only(right: 20),
-                      child: Icon(CupertinoIcons.cart),
+                      padding: const EdgeInsets.only(right: 20),
+                      child: const Icon(CupertinoIcons.cart),
                     ); // Handle error case if necessary
                   } else {
                     return Container(
                       height: 40,
                       width: 40,
-                      padding: EdgeInsets.only(right: 20),
-                      child: Icon(CupertinoIcons
+                      padding: const EdgeInsets.only(right: 20),
+                      child: const Icon(CupertinoIcons
                           .cart), // Show the cart icon with the item count
                     )
                         .badge(
@@ -99,12 +95,12 @@ class _OrderScreenState extends State<OrderScreen> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
-              return Center(child: Text("Error"));
+              return const Center(child: Text("Error"));
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Container(
+              return SizedBox(
                 height: Get.height / 5,
-                child: Center(
+                child: const Center(
                   child: CupertinoActivityIndicator(),
                 ),
               );
@@ -117,7 +113,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
             if (snapshot.data != null) {
               return Padding(
-                padding: EdgeInsets.only(left: 5, right: 5),
+                padding: const EdgeInsets.only(left: 5, right: 5),
                 child: Column(
                   children: [
                     ListView.builder(
@@ -190,9 +186,13 @@ class _OrderScreenState extends State<OrderScreen> {
                                   content: Padding(
                                     padding: const EdgeInsets.all(0),
                                     child: Container(
-                                      margin: EdgeInsets.all(0),
+                                      margin: const EdgeInsets.all(0),
                                       height: Get.height / 6.5,
-                                      child: Row(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.red,
+                                      ),
+                                      child: const Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
@@ -200,10 +200,6 @@ class _OrderScreenState extends State<OrderScreen> {
                                               color: Colors.white),
                                           SizedBox(width: 8),
                                         ],
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.red,
                                       ),
                                     ),
                                   ),
@@ -242,7 +238,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                       orderModel.productImages[0]),
                                               Expanded(
                                                 child: Padding(
-                                                  padding: EdgeInsets.all(0),
+                                                  padding: const EdgeInsets.all(0),
                                                   child: Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment.start,
@@ -251,7 +247,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                     children: [
                                                       orderModel
                                                           .productName.text.bold
-                                                          .textStyle(TextStyle(
+                                                          .textStyle(const TextStyle(
                                                               fontSize: 11))
                                                           .overflow(
                                                               TextOverflow.ellipsis)
@@ -274,12 +270,12 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                       .connectionState ==
                                                                   ConnectionState
                                                                       .waiting) {
-                                                                return CircularProgressIndicator();
+                                                                return const CircularProgressIndicator();
                                                               } else if (snapshot
                                                                   .hasError) {
                                                                 print(
                                                                     snapshot.error);
-                                                                return Icon(
+                                                                return const Icon(
                                                                     Icons.error);
                                                               } else {
                                                                 return CachedNetworkImage(
@@ -289,11 +285,11 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                   height: 16,
                                                                   placeholder: (context,
                                                                           url) =>
-                                                                      CircularProgressIndicator(),
+                                                                      const CircularProgressIndicator(),
                                                                   errorWidget: (context,
                                                                           url,
                                                                           error) =>
-                                                                      Icon(Icons
+                                                                      const Icon(Icons
                                                                           .error),
                                                                 );
                                                               }
@@ -303,12 +299,12 @@ class _OrderScreenState extends State<OrderScreen> {
                                                               alignment: Alignment
                                                                   .centerLeft,
                                                               padding:
-                                                                  EdgeInsets.only(
+                                                                  const EdgeInsets.only(
                                                                       left: 2),
-                                                              child: "${orderModel.brandName}"
+                                                              child: orderModel.brandName
                                                                   .text
                                                                   .textStyle(
-                                                                      TextStyle(
+                                                                      const TextStyle(
                                                                           fontSize:
                                                                               10))
                                                                   .align(TextAlign
@@ -328,7 +324,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                       4.heightBox,
                                                       "Color : ${orderModel.productColor}"
                                                           .text
-                                                          .textStyle(TextStyle(
+                                                          .textStyle(const TextStyle(
                                                               fontSize: 10))
                                                           .light
                                                           .overflow(
@@ -345,14 +341,14 @@ class _OrderScreenState extends State<OrderScreen> {
                                                         children: [
                                                           Container(
                                                             margin:
-                                                                EdgeInsets.all(0),
+                                                                const EdgeInsets.all(0),
                                                             // height: Get.height * 0.05,
                                                             child: orderModel.isSale
                                                                 ? "Rs ${orderModel.salePrice}"
                                                                     .text
                                                                     .bold
                                                                     .textStyle(
-                                                                        TextStyle(
+                                                                        const TextStyle(
                                                                             fontSize:
                                                                                 10))
                                                                     .make()
@@ -360,7 +356,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                     .text
                                                                     .bold
                                                                     .textStyle(
-                                                                        TextStyle(
+                                                                        const TextStyle(
                                                                             fontSize:
                                                                                 10))
                                                                     .make(),
@@ -368,7 +364,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                           "Qty : ${orderModel.productQuantity}"
                                                               .text
                                                               .bold
-                                                              .textStyle(TextStyle(
+                                                              .textStyle(const TextStyle(
                                                                   fontSize: 10))
                                                               .make()
                                                               .pOnly(right: 20)
@@ -380,7 +376,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                               ),
                                             ],
                                           ),
-                                          Container(
+                                          SizedBox(
                                             width: Get.width * 0.95,
                                             height: Get.height / 8,
                                             child: Row(
@@ -397,7 +393,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                       children: [
                                                         "Status : "
                                                             .text
-                                                            .textStyle(TextStyle(
+                                                            .textStyle(const TextStyle(
                                                                 fontSize: 12))
                                                             .color(currentTheme
                                                                 .colorScheme
@@ -407,7 +403,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                             ? "Delivered"
                                                                 .text
                                                                 .textStyle(
-                                                                    TextStyle(
+                                                                    const TextStyle(
                                                                         fontSize:
                                                                             13))
                                                                 .color(currentTheme
@@ -417,7 +413,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                             : "In Progress"
                                                                 .text
                                                                 .textStyle(
-                                                                    TextStyle(
+                                                                    const TextStyle(
                                                                         fontSize:
                                                                             13))
                                                                 .color(currentTheme
@@ -430,14 +426,14 @@ class _OrderScreenState extends State<OrderScreen> {
                                                       children: [
                                                         "Shipping Day : "
                                                             .text
-                                                            .textStyle(TextStyle(
+                                                            .textStyle(const TextStyle(
                                                                 fontSize: 12))
                                                             .color(currentTheme
                                                                 .colorScheme
                                                                 .tertiaryFixed)
                                                             .make(),
                                                         shippingDay.text
-                                                            .textStyle(TextStyle(
+                                                            .textStyle(const TextStyle(
                                                                 fontSize: 13))
                                                             .color(currentTheme
                                                                 .colorScheme
@@ -449,7 +445,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                       children: [
                                                         "Total : "
                                                             .text
-                                                            .textStyle(TextStyle(
+                                                            .textStyle(const TextStyle(
                                                                 fontSize: 12))
                                                             .color(currentTheme
                                                                 .colorScheme
@@ -457,7 +453,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                             .make(),
                                                         orderModel
                                                             .productTotalPrice.text
-                                                            .textStyle(TextStyle(
+                                                            .textStyle(const TextStyle(
                                                                 fontSize: 13))
                                                             .color(currentTheme
                                                                 .colorScheme
@@ -473,14 +469,14 @@ class _OrderScreenState extends State<OrderScreen> {
                                                     color: Colors.transparent,
                                                     child: TextButton(
                                                       style: ButtonStyle(
-                                                          foregroundColor: WidgetStatePropertyAll(
+                                                          foregroundColor: const WidgetStatePropertyAll(
                                                               Colors.transparent),
                                                           backgroundColor:
                                                               WidgetStateProperty.all(
                                                                   currentTheme
                                                                       .colorScheme
                                                                       .onPrimary),
-                                                          shape: WidgetStatePropertyAll(
+                                                          shape: const WidgetStatePropertyAll(
                                                               RoundedRectangleBorder(
                                                                   borderRadius:
                                                                       BorderRadius.all(

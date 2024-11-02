@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/user-panel/SettingScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/WishListScreen.dart';
-import 'package:flutter_application_1/screens/user-panel/allProductsScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/mainScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/storeScreen.dart';
 import 'package:flutter_application_1/services/fcmService.dart';
@@ -40,7 +38,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
           elevation: 0,
           selectedIndex : controller.selectedIndex.value,
           onDestinationSelected: (index)=> controller.selectedIndex.value = index,
-          destinations: [
+          destinations: const [
             NavigationDestination(icon: Icon(Iconsax.home), label: 'Home'),
             NavigationDestination(icon: Icon(Iconsax.shop), label: 'Store'),
             NavigationDestination(icon: Icon(Iconsax.heart), label: 'WishList'),
@@ -57,9 +55,9 @@ class NavigationController extends GetxController{
   final Rx<int> selectedIndex = 0.obs;
 
   final screens = [
-    Mainscreen(),
-    StoreScreen(),
-    WishlistScreen(),
-    SettingScreen()
+    const Mainscreen(),
+    const StoreScreen(),
+    const WishlistScreen(),
+    const SettingScreen()
   ];
 }

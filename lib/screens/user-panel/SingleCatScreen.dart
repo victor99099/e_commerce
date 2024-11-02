@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/user-panel/cartScreen.dart';
 import 'package:flutter_application_1/widgets/SingleCatFlashSaleWidget.dart';
@@ -49,29 +48,29 @@ class _SingleCatScreenState extends State<SingleCatScreen>
         actions: [
           InkWell(
               onTap: () => Get.to(() => SearchScreen()),
-              child: Icon(Iconsax.search_normal).pOnly(right: 10)),
+              child: const Icon(Iconsax.search_normal).pOnly(right: 10)),
           InkWell(
-            onTap: () => Get.to(() => CartScreen()),
+            onTap: () => Get.to(() => const CartScreen()),
             child: StreamBuilder<int>(
               stream: cartItemsController
                   .getCartItemsCount(), // Fetch the cart item count
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Container(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Icon(CupertinoIcons.cart),
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(CupertinoIcons.cart),
                   ); // Display an empty cart icon or a loading indicator
                 } else if (snapshot.hasError) {
                   return Container(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Icon(CupertinoIcons.cart),
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(CupertinoIcons.cart),
                   ); // Handle error case if necessary
                 } else {
                   return Container(
                     height: 40,
                     width: 40,
-                    padding: EdgeInsets.only(right: 20),
-                    child: Icon(CupertinoIcons
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(CupertinoIcons
                         .cart), // Show the cart icon with the item count
                   )
                       .badge(
@@ -87,7 +86,7 @@ class _SingleCatScreenState extends State<SingleCatScreen>
             ),
           )
         ],
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: currentTheme.colorScheme.secondary,
         title: widget.categoryTitle.text
             .color(Colors.white)
@@ -99,12 +98,12 @@ class _SingleCatScreenState extends State<SingleCatScreen>
           controller: tabController,
           // isScrollable: true,
           tabAlignment: TabAlignment.fill,
-          padding: EdgeInsets.all(0),
+          padding: const EdgeInsets.all(0),
           dividerColor: currentTheme.colorScheme.primary,
           indicatorColor: currentTheme.colorScheme.onPrimary,
           labelColor: currentTheme.colorScheme.tertiary,
           unselectedLabelColor: currentTheme.colorScheme.surface,
-          tabs: [
+          tabs: const [
             Tab(child: Text('Flash Sale')),
             Tab(child: Text('New Arrivals')),
             Tab(child: Text('Best Selling')),

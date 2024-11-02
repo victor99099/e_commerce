@@ -24,7 +24,7 @@ class GetDeviceTokenController extends GetxController {
     } catch (e) {
       Get.snackbar("Error", "$e",
           snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Color(0xFFFF5722),
+          backgroundColor: const Color(0xFFFF5722),
           colorText: Colors.white);
       EasyLoading.dismiss();
     }

@@ -22,7 +22,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
     final currentTheme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: currentTheme.colorScheme.secondary,
         title: "Categories".text.color(Colors.white).bold.make(),
       ),
@@ -34,12 +34,12 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
               future: FirebaseFirestore.instance.collection('categories').get(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
-                  return Center(child: Text("Error"));
+                  return const Center(child: Text("Error"));
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Container(
+                  return SizedBox(
                     height: Get.height / 5,
-                    child: Center(
+                    child: const Center(
                       child: CupertinoActivityIndicator(),
                     ),
                   );
@@ -52,7 +52,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
             
                 if (snapshot.data != null) {
                   return GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisSpacing: 3,
                       crossAxisSpacing: 3,
@@ -70,7 +70,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                       return GestureDetector(
                         onTap: ()=>Get.to(()=>SingleCategoryScreen(categoryId:categoriesModel.categoryId,categoryTitle:categoriesModel.categoryName ,)),
                         child: Padding(
-                          padding: EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(5),
                           child: Container(
                             child: Center(
                               child: FillImageCard(
@@ -85,7 +85,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                                   heightFactor: 0.2,
                                   child: Text(
                                     categoriesModel.categoryName,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 11,
                                       fontWeight: FontWeight.bold,
                                     ),

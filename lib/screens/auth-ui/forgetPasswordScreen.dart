@@ -1,14 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/ForgetPasswordController.dart';
-import 'package:flutter_application_1/controllers/SignINController.dart';
-import 'package:flutter_application_1/screens/user-panel/mainScreen.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import 'SignUpScreen.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({super.key});
@@ -36,7 +32,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       .xl
                       .color(getTheme.colorScheme.onPrimary)
                       .make().pOnly(bottom: 30)
-                  : Container(
+                  : SizedBox(
                       height: Get.height * 0.2,
                       width: Get.width,
                       child: Lottie.asset("assets/images/loadingCart.json"),
@@ -47,7 +43,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     decoration: BoxDecoration(
                         color: getTheme.cardColor,
                         // border: Border.,
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(30),
                             topRight: Radius.circular(30))),
                     width: Get.width,
@@ -94,7 +90,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                               .tertiary), // Border color when focused
                                     ),
                                     contentPadding:
-                                        EdgeInsets.only(top: 2.0, left: 8.0),
+                                        const EdgeInsets.only(top: 2.0, left: 8.0),
                                   ),
                                 ).pOnly(bottom: 10),
                                 (Get.height * 1 / 20).heightBox,
@@ -105,7 +101,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                     child: TextButton(
                                       style: ButtonStyle(
                                           foregroundColor:
-                                              WidgetStatePropertyAll(
+                                              const WidgetStatePropertyAll(
                                                   Colors.transparent),
                                           backgroundColor:
                                               WidgetStateProperty.all(
@@ -124,7 +120,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                               snackPosition:
                                                   SnackPosition.BOTTOM,
                                               backgroundColor:
-                                                  Color(0xFFFF5722),
+                                                  const Color(0xFFFF5722),
                                               colorText: Colors.white);
                                         } else {
                                           String email = useremail.text.trim();

@@ -1,12 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_application_1/controllers/ReviewIdsController.dart';
 import 'package:flutter_application_1/models/product-review-model.dart';
-import 'package:flutter_application_1/models/user-model.dart';
-import 'package:flutter_application_1/screens/user-panel/Profilescreen.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -23,7 +19,7 @@ class ReviewSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentTheme = Theme.of(context);
     return Container(
-      margin: EdgeInsets.only(bottom: 50),
+      margin: const EdgeInsets.only(bottom: 50),
       height: Get.height,
       width: Get.width,
       child: Column(
@@ -33,7 +29,7 @@ class ReviewSheet extends StatelessWidget {
           // 20.heightBox,
           RatingBar.builder(
               glow: false,
-              itemPadding: EdgeInsets.all(5),
+              itemPadding: const EdgeInsets.all(5),
               // glowColor: Colors.transparent,
               initialRating: 0,
               minRating: 1,
@@ -62,7 +58,7 @@ class ReviewSheet extends StatelessWidget {
                   borderSide:
                       BorderSide(color: currentTheme.colorScheme.onTertiary),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                 ),
                 hintStyle:
@@ -75,10 +71,10 @@ class ReviewSheet extends StatelessWidget {
               color: Colors.transparent,
               child: TextButton(
                 style: ButtonStyle(
-                    foregroundColor: WidgetStatePropertyAll(Colors.transparent),
+                    foregroundColor: const WidgetStatePropertyAll(Colors.transparent),
                     backgroundColor: WidgetStateProperty.all(
                         currentTheme.colorScheme.onPrimary),
-                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                    shape: const WidgetStatePropertyAll(RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)))),
                     overlayColor: WidgetStatePropertyAll(
                         currentTheme.colorScheme.primary)),

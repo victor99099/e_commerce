@@ -48,7 +48,7 @@ class _AllCategoriesWidgetState extends State<SingleCategoryWidgetNewArrival> {
     final currentTheme = Theme.of(context);
     WishlistController wishlistController = Get.put(WishlistController());
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Column(
         children: [
           Expanded(
@@ -62,12 +62,12 @@ class _AllCategoriesWidgetState extends State<SingleCategoryWidgetNewArrival> {
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
-                  return Center(child: Text("Error"));
+                  return const Center(child: Text("Error"));
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Container(
+                  return SizedBox(
                     height: Get.height / 5,
-                    child: Center(
+                    child: const Center(
                       child: CupertinoActivityIndicator(),
                     ),
                   );
@@ -94,8 +94,8 @@ class _AllCategoriesWidgetState extends State<SingleCategoryWidgetNewArrival> {
                     },
                     child: GridView.builder(
                       controller: _gridController,
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         mainAxisSpacing: 3,
                         crossAxisSpacing: 4,
@@ -135,27 +135,27 @@ class _AllCategoriesWidgetState extends State<SingleCategoryWidgetNewArrival> {
                           onTap: () => Get.to(() =>
                               ProductDetailScreen(productModel: productModel)),
                           child: Padding(
-                            padding: EdgeInsets.all(0),
+                            padding: const EdgeInsets.all(0),
                             child: Card(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
                               elevation: 5,
                               child: Container(
-                                padding: EdgeInsets.only(top: 10),
-                                margin: EdgeInsets.all(0),
+                                padding: const EdgeInsets.only(top: 10),
+                                margin: const EdgeInsets.all(0),
                                 decoration: BoxDecoration(
                                     color: currentTheme.primaryColorLight.withOpacity(1),
                                     border:
                                         Border.all(color: Colors.transparent),
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(10))),
+                                        const BorderRadius.all(Radius.circular(10))),
                                 child: Center(
                                   child: Stack(
                                     children: [
                                       Hero(
                                         tag: Key(productModel.productId),
                                         child: FillImageCard(
-                                          contentPadding: EdgeInsets.only(
+                                          contentPadding: const EdgeInsets.only(
                                               bottom: 0, top: 2),
                                           color: currentTheme.cardColor.withOpacity(0),
                                           borderRadius: 20,
@@ -170,7 +170,7 @@ class _AllCategoriesWidgetState extends State<SingleCategoryWidgetNewArrival> {
                                             heightFactor: 0.2,
                                             child: Text(
                                               productModel.productName,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -179,15 +179,15 @@ class _AllCategoriesWidgetState extends State<SingleCategoryWidgetNewArrival> {
                                           ),
                                           footer: Container(
                                             width: double.infinity,
-                                            margin: EdgeInsets.all(0),
-                                            padding: EdgeInsets.only(top: 5),
+                                            margin: const EdgeInsets.all(0),
+                                            padding: const EdgeInsets.only(top: 5),
                                             child: Column(
                                               children: [
                                                 Row(
                                                   children: [
                                                     Text(
                                                       "Rs ${productModel.salePrice}",
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           fontSize: 16,
                                                           fontWeight:
                                                               FontWeight.bold),
@@ -195,7 +195,7 @@ class _AllCategoriesWidgetState extends State<SingleCategoryWidgetNewArrival> {
                                                     5.widthBox,
                                                     Flexible(
                                                       child: Text(
-                                                        "${productModel.fullPrice}",
+                                                        productModel.fullPrice,
                                                         style: TextStyle(
                                                             fontSize: 16,
                                                             decoration:
@@ -212,7 +212,7 @@ class _AllCategoriesWidgetState extends State<SingleCategoryWidgetNewArrival> {
                                                 ),
                                                 Container(
                                                   // alignment: Alignment.bottomLeft,
-                                                  margin: EdgeInsets.only(
+                                                  margin: const EdgeInsets.only(
                                                       right: 20, top: 5),
                                                   height: Get.height * 0.045,
                                                   child: Row(
@@ -221,15 +221,15 @@ class _AllCategoriesWidgetState extends State<SingleCategoryWidgetNewArrival> {
                                                     children: [
                                                       Container(
                                                         margin:
-                                                            EdgeInsets.all(0),
+                                                            const EdgeInsets.all(0),
                                                         padding:
-                                                            EdgeInsets.all(0),
+                                                            const EdgeInsets.all(0),
                                                         width: Get.width / 10,
                                                         height:
                                                             Get.height * 0.045,
                                                         child: Card(
                                                           margin:
-                                                              EdgeInsets.all(1),
+                                                              const EdgeInsets.all(1),
                                                           color: MyTheme.dark,
                                                           shape: RoundedRectangleBorder(
                                                               borderRadius:
@@ -248,7 +248,7 @@ class _AllCategoriesWidgetState extends State<SingleCategoryWidgetNewArrival> {
                                                                 child: "-"
                                                                     .text
                                                                     .bold
-                                                                    .textStyle(TextStyle(
+                                                                    .textStyle(const TextStyle(
                                                                         fontSize:
                                                                             8))
                                                                     .color(currentTheme
@@ -260,15 +260,15 @@ class _AllCategoriesWidgetState extends State<SingleCategoryWidgetNewArrival> {
                                                       ),
                                                       Container(
                                                         margin:
-                                                            EdgeInsets.all(0),
+                                                            const EdgeInsets.all(0),
                                                         padding:
-                                                            EdgeInsets.all(0),
+                                                            const EdgeInsets.all(0),
                                                         width: Get.width / 10,
                                                         height:
                                                             Get.height * 0.045,
                                                         child: Card(
                                                           margin:
-                                                              EdgeInsets.all(1),
+                                                              const EdgeInsets.all(1),
                                                           color: MyTheme.dark,
                                                           shape: RoundedRectangleBorder(
                                                               borderRadius:
@@ -281,7 +281,7 @@ class _AllCategoriesWidgetState extends State<SingleCategoryWidgetNewArrival> {
                                                                 () async {
                                                               await checkProductExistance(
                                                                   uId:
-                                                                      user!.uid,
+                                                                      user.uid,
                                                                   productModel:
                                                                       productModel);
                                                               await controller
@@ -302,7 +302,7 @@ class _AllCategoriesWidgetState extends State<SingleCategoryWidgetNewArrival> {
                                                                         .connectionState ==
                                                                     ConnectionState
                                                                         .waiting) {
-                                                                  return Center(
+                                                                  return const Center(
                                                                       child:
                                                                           CircularProgressIndicator());
                                                                 }
@@ -317,7 +317,7 @@ class _AllCategoriesWidgetState extends State<SingleCategoryWidgetNewArrival> {
                                                                         0;
                                                                 return Container(
                                                                   padding:
-                                                                      EdgeInsets
+                                                                      const EdgeInsets
                                                                           .all(
                                                                               0),
                                                                   child: Text(
@@ -360,8 +360,8 @@ class _AllCategoriesWidgetState extends State<SingleCategoryWidgetNewArrival> {
                                               child: IconButton(
                                                 icon: wishlistController.isFav(
                                                         productModel.productId)
-                                                    ? Icon(Iconsax.heart5)
-                                                    : Icon(Iconsax.heart),
+                                                    ? const Icon(Iconsax.heart5)
+                                                    : const Icon(Iconsax.heart),
                                                 color: wishlistController.isFav(
                                                         productModel.productId)
                                                     ? Colors.red
@@ -370,7 +370,7 @@ class _AllCategoriesWidgetState extends State<SingleCategoryWidgetNewArrival> {
                                                 onPressed: () {
                                                   wishlistController
                                                       .toggleWishlistStatus(
-                                                          uId: user!.uid,
+                                                          uId: user.uid,
                                                           productModel:
                                                               productModel);
                                                 },

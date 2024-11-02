@@ -2,31 +2,23 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:draggable_bottom_sheet/draggable_bottom_sheet.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_application_1/controllers/ReviewIdsController.dart';
 import 'package:flutter_application_1/models/cart-model.dart';
 import 'package:flutter_application_1/models/product-model.dart';
-import 'package:flutter_application_1/screens/user-panel/ReviewSheet.dart';
 import 'package:flutter_application_1/utils/app-constant.dart';
 import 'package:flutter_application_1/widgets/SuggestionSliderWidget.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:sheet/route.dart';
-import 'package:sheet/sheet.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../controllers/ReviewControllwe.dart';
-import '../../controllers/bannersController.dart';
 import '../../controllers/wishlistController.dart';
 import '../../models/product-review-model.dart';
 import '../../utils/ProductColors.dart';
-import 'cartScreen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   ProductModel productModel;
@@ -46,7 +38,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
   void initState() {
     super.initState();
     _autoScrollTimer =
-        Timer.periodic(Duration(seconds: 3), (timer) => _autoScroll());
+        Timer.periodic(const Duration(seconds: 3), (timer) => _autoScroll());
   }
 
   @override
@@ -60,7 +52,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
       _pageController.jumpToPage(0); // Jump to the first slide
     } else {
       _pageController.nextPage(
-          duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+          duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
     }
   }
 
@@ -96,15 +88,15 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                     child: IconButton(
                       icon: wishlistController
                               .isFav(widget.productModel.productId)
-                          ? Icon(Iconsax.heart5)
-                          : Icon(Iconsax.heart),
+                          ? const Icon(Iconsax.heart5)
+                          : const Icon(Iconsax.heart),
                       color: wishlistController
                               .isFav(widget.productModel.productId)
                           ? Colors.red
                           : currentTheme.colorScheme.onPrimary,
                       onPressed: () {
                         wishlistController.toggleWishlistStatus(
-                            uId: user!.uid, productModel: widget.productModel);
+                            uId: user.uid, productModel: widget.productModel);
                       },
                     ),
                   ).pOnly(right: 20, bottom: 4),
@@ -140,13 +132,13 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                     widget.productModel.productImages[index],
                                 fit: BoxFit.contain,
                                 width: Get.width - 10, // Adjust width if needed
-                                placeholder: (context, url) => ColoredBox(
+                                placeholder: (context, url) => const ColoredBox(
                                   color: Colors.grey,
                                   child: Center(
                                       child: CircularProgressIndicator()),
                                 ),
                                 errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
+                                    const Icon(Icons.error),
                               ),
                             ),
                           ),
@@ -171,7 +163,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                 width: Get.width,
                                 height: Get.height * 0.01,
                                 alignment: Alignment.topRight,
-                                padding: EdgeInsets.only(right: 10),
+                                padding: const EdgeInsets.only(right: 10),
                                 child: IconButton(
                                     onPressed: () {
                                       print('Button Pressed');
@@ -183,7 +175,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                     ))),
                             5.heightBox,
                             Container(
-                              padding: EdgeInsets.only(left: 10),
+                              padding: const EdgeInsets.only(left: 10),
                               alignment: Alignment.topLeft,
                               child: FutureBuilder<Map<String, dynamic>>(
                                 future: reviewController
@@ -192,13 +184,13 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    return CircularProgressIndicator(); // Loading indicator while waiting
+                                    return const CircularProgressIndicator(); // Loading indicator while waiting
                                   } else if (snapshot.hasError) {
                                     return Text(
                                         'Error: ${snapshot.error}'); // Display error message if any
                                   } else if (!snapshot.hasData ||
                                       snapshot.data == null) {
-                                    return Text(
+                                    return const Text(
                                         'No reviews available'); // Handle case with no data
                                   } else {
                                     final averageRating = snapshot
@@ -207,7 +199,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                         snapshot.data!['reviewCount'] as int;
                                     return Row(
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           Iconsax.star5,
                                           color: Colors.amber,
                                         ),
@@ -223,7 +215,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                             isSale
                                 ? Container(
                                     alignment: Alignment.centerLeft,
-                                    padding: EdgeInsets.only(left: 10),
+                                    padding: const EdgeInsets.only(left: 10),
                                     child: Row(
                                       children: [
                                         "Rs ${widget.productModel.salePrice}"
@@ -234,13 +226,13 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                                 .colorScheme.onPrimary)
                                             .make(),
                                         15.widthBox,
-                                        "${widget.productModel.fullPrice}"
+                                        widget.productModel.fullPrice
                                             .text
                                             .xl2
                                             .align(TextAlign.left)
                                             .color(currentTheme
                                                 .colorScheme.tertiary)
-                                            .textStyle(TextStyle(
+                                            .textStyle(const TextStyle(
                                                 decoration:
                                                     TextDecoration.lineThrough))
                                             .make(),
@@ -248,7 +240,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                     ))
                                 : Container(
                                     alignment: Alignment.centerLeft,
-                                    padding: EdgeInsets.only(left: 10),
+                                    padding: const EdgeInsets.only(left: 10),
                                     child: "Rs ${widget.productModel.fullPrice}"
                                         .text
                                         .xl2
@@ -259,10 +251,10 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                             5.heightBox,
                             Container(
                                 alignment: Alignment.centerLeft,
-                                padding: EdgeInsets.only(left: 10),
-                                child: "${widget.productModel.productName}"
+                                padding: const EdgeInsets.only(left: 10),
+                                child: widget.productModel.productName
                                     .text
-                                    .textStyle(TextStyle(fontSize: 16))
+                                    .textStyle(const TextStyle(fontSize: 16))
                                     .align(TextAlign.left)
                                     .color(currentTheme.colorScheme.tertiary)
                                     .make()),
@@ -271,12 +263,12 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                               children: [
                                 "stock : "
                                     .text
-                                    .textStyle(TextStyle(fontSize: 12))
+                                    .textStyle(const TextStyle(fontSize: 12))
                                     .make(),
                                 "In Stock"
                                     .text
                                     .bold
-                                    .textStyle(TextStyle(fontSize: 14))
+                                    .textStyle(const TextStyle(fontSize: 14))
                                     .make()
                               ],
                             ).pOnly(left: 10),
@@ -284,12 +276,12 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                               children: [
                                 "Delivey time : "
                                     .text
-                                    .textStyle(TextStyle(fontSize: 12))
+                                    .textStyle(const TextStyle(fontSize: 12))
                                     .make(),
                                 widget.productModel.deliveryTime
                                     .text
                                     .bold
-                                    .textStyle(TextStyle(fontSize: 14))
+                                    .textStyle(const TextStyle(fontSize: 14))
                                     .make()
                               ],
                             ).pOnly(left: 10),
@@ -302,29 +294,29 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
-                                      return CircularProgressIndicator();
+                                      return const CircularProgressIndicator();
                                     } else if (snapshot.hasError) {
                                       print(snapshot.error);
-                                      return Icon(Icons.error);
+                                      return const Icon(Icons.error);
                                     } else {
                                       return CachedNetworkImage(
                                         imageUrl: snapshot.data!,
                                         width: 25,
                                         height: 25,
                                         placeholder: (context, url) =>
-                                            CircularProgressIndicator(),
+                                            const CircularProgressIndicator(),
                                         errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
+                                            const Icon(Icons.error),
                                       );
                                     }
                                   },
                                 ),
                                 Container(
                                     alignment: Alignment.centerLeft,
-                                    padding: EdgeInsets.only(left: 10),
-                                    child: "${widget.productModel.brandName}"
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: widget.productModel.brandName
                                         .text
-                                        .textStyle(TextStyle(fontSize: 15))
+                                        .textStyle(const TextStyle(fontSize: 15))
                                         .align(TextAlign.left)
                                         .color(
                                             currentTheme.colorScheme.tertiary)
@@ -343,11 +335,11 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                               children: [
                                 Container(
                                     alignment: Alignment.centerLeft,
-                                    padding: EdgeInsets.only(left: 10),
+                                    padding: const EdgeInsets.only(left: 10),
                                     child: "Colors : "
                                         .text
                                         .bold
-                                        .textStyle(TextStyle(fontSize: 16))
+                                        .textStyle(const TextStyle(fontSize: 16))
                                         .align(TextAlign.left)
                                         .color(
                                             currentTheme.colorScheme.tertiary)
@@ -369,7 +361,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                       return Row(
                                         children: [
                                           Obx(
-                                            () => Container(
+                                            () => SizedBox(
                                               width: Get.width * 0.12,
                                               child: Card(
                                                 shape: RoundedRectangleBorder(
@@ -385,7 +377,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                                               .colorScheme
                                                               .tertiary,
                                                           width: 2)
-                                                      : BorderSide(
+                                                      : const BorderSide(
                                                           color: Colors
                                                               .transparent,
                                                           width: 4),
@@ -397,7 +389,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                                     IconButton(
                                                       style: ButtonStyle(
                                                         backgroundColor:
-                                                            MaterialStateProperty
+                                                            WidgetStateProperty
                                                                 .all(color),
                                                       ),
                                                       onPressed: () {
@@ -407,14 +399,14 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                                                 .productColors[
                                                             index];
                                                       },
-                                                      icon: SizedBox
+                                                      icon: const SizedBox
                                                           .shrink(), // Empty icon to clear default icon
                                                     ),
                                                     if (selectedOption.value ==
                                                         widget.productModel
                                                                 .productColors[
                                                             index])
-                                                      Icon(
+                                                      const Icon(
                                                         Icons.check,
                                                         color: Colors.white,
                                                       )
@@ -433,22 +425,22 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                             20.heightBox,
                             Container(
                                 alignment: Alignment.centerLeft,
-                                padding: EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 10),
                                 child: "Details"
                                     .text
                                     .bold
-                                    .textStyle(TextStyle(fontSize: 16))
+                                    .textStyle(const TextStyle(fontSize: 16))
                                     .align(TextAlign.left)
                                     .color(currentTheme.colorScheme.tertiary)
                                     .make()),
                             5.heightBox,
                             Container(
                                 alignment: Alignment.centerLeft,
-                                padding: EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 10),
                                 child:
-                                    "${widget.productModel.productDescription}"
+                                    widget.productModel.productDescription
                                         .text
-                                        .textStyle(TextStyle(fontSize: 10))
+                                        .textStyle(const TextStyle(fontSize: 10))
                                         .align(TextAlign.left)
                                         .color(currentTheme
                                             .colorScheme.tertiaryFixed)
@@ -456,24 +448,24 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                             40.heightBox,
                             Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Iconsax.star5,
                                   color: Colors.amber,
                                 ),
                                 Container(
                                     alignment: Alignment.centerLeft,
-                                    padding: EdgeInsets.only(left: 10),
+                                    padding: const EdgeInsets.only(left: 10),
                                     child: "Rating & Reviews"
                                         .text
                                         .bold
-                                        .textStyle(TextStyle(fontSize: 16))
+                                        .textStyle(const TextStyle(fontSize: 16))
                                         .align(TextAlign.left)
                                         .color(
                                             currentTheme.colorScheme.tertiary)
                                         .make()),
                                 5.heightBox,
                                 Container(
-                                  padding: EdgeInsets.only(left: 10),
+                                  padding: const EdgeInsets.only(left: 10),
                                   alignment: Alignment.topLeft,
                                   child: FutureBuilder<Map<String, dynamic>>(
                                     future: reviewController
@@ -482,13 +474,13 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
-                                        return CircularProgressIndicator(); // Loading indicator while waiting
+                                        return const CircularProgressIndicator(); // Loading indicator while waiting
                                       } else if (snapshot.hasError) {
                                         return Text(
                                             'Error: ${snapshot.error}'); // Display error message if any
                                       } else if (!snapshot.hasData ||
                                           snapshot.data == null) {
-                                        return Text(
+                                        return const Text(
                                             'No reviews available'); // Handle case with no data
                                       } else {
                                         final averageRating = snapshot
@@ -514,7 +506,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                   builder: (BuildContext context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
-                                      return Center(
+                                      return const Center(
                                           child: CircularProgressIndicator());
                                     } else if (snapshot.hasError) {
                                       return Center(
@@ -522,7 +514,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                               "Error fetching reviews: ${snapshot.error}"));
                                     } else if (!snapshot.hasData ||
                                         snapshot.data!.isEmpty) {
-                                      return Center(
+                                      return const Center(
                                           child: Text("No reviews available."));
                                     } else {
                                       // Reviews are successfully fetched
@@ -534,19 +526,19 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                             horizontal: 8.0, vertical: 8),
                                         child: ListView.builder(
                                           physics:
-                                              NeverScrollableScrollPhysics(),
+                                              const NeverScrollableScrollPhysics(),
                                           shrinkWrap: true,
                                           itemCount: reviews.length,
                                           itemBuilder: (context, index) {
                                             final review = reviews[index];
-                                            return Container(
+                                            return SizedBox(
                                               width: Get.width * 0.9,
                                               height: Get.height / 4.5,
                                               child: Column(
                                                 children: [
                                                   Row(
                                                     children: [
-                                                      Container(
+                                                      SizedBox(
                                                         width: 40,
                                                         height: 40,
                                                         child: ClipRRect(
@@ -559,7 +551,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                                       ),
                                                       Text(
                                                         review.userName,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             fontSize: 15,
                                                             fontWeight:
                                                                 FontWeight
@@ -574,7 +566,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                                           ignoreGestures: true,
                                                           glow: false,
                                                           itemPadding:
-                                                              EdgeInsets.all(0),
+                                                              const EdgeInsets.all(0),
                                                           // glowColor: Colors.transparent,
                                                           initialRating:
                                                               review.rating,
@@ -606,7 +598,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                                       ).pOnly(left: 10)
                                                     ],
                                                   ).pOnly(top: 10),
-                                                  Container(
+                                                  SizedBox(
                                                       width: Get.width * 0.9,
                                                       height: Get.height / 12,
                                                       child: Text(
@@ -627,11 +619,11 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                             25.heightBox,
                             Container(
                                 alignment: Alignment.centerLeft,
-                                padding: EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 10),
                                 child: "You may like"
                                     .text
                                     .bold
-                                    .textStyle(TextStyle(fontSize: 16))
+                                    .textStyle(const TextStyle(fontSize: 16))
                                     .align(TextAlign.left)
                                     .color(currentTheme.colorScheme.tertiary)
                                     .make()),
@@ -653,19 +645,19 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: EdgeInsets.only(left: 20),
-                  margin: EdgeInsets.only(right: 20, top: 5),
+                  padding: const EdgeInsets.only(left: 20),
+                  margin: const EdgeInsets.only(right: 20, top: 5),
                   height: Get.height * 0.045,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        margin: EdgeInsets.all(0),
-                        padding: EdgeInsets.all(0),
+                        margin: const EdgeInsets.all(0),
+                        padding: const EdgeInsets.all(0),
                         width: Get.width / 10,
                         height: Get.height * 0.045,
                         child: Card(
-                          margin: EdgeInsets.all(1),
+                          margin: const EdgeInsets.all(1),
                           color: MyTheme.dark,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5)),
@@ -681,17 +673,17 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                 child: "-"
                                     .text
                                     .bold
-                                    .textStyle(TextStyle(fontSize: 8))
+                                    .textStyle(const TextStyle(fontSize: 8))
                                     .color(currentTheme.colorScheme.primary)
                                     .make()),
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: Get.width / 10,
                         height: Get.height * 0.045,
                         child: Card(
-                            margin: EdgeInsets.all(1),
+                            margin: const EdgeInsets.all(1),
                             color: currentTheme.colorScheme.surface,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5)),
@@ -706,12 +698,12 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                             )),
                       ).pOnly(left: 5),
                       Container(
-                        margin: EdgeInsets.all(0),
-                        padding: EdgeInsets.all(0),
+                        margin: const EdgeInsets.all(0),
+                        padding: const EdgeInsets.all(0),
                         width: Get.width / 10,
                         height: Get.height * 0.045,
                         child: Card(
-                          margin: EdgeInsets.all(1),
+                          margin: const EdgeInsets.all(1),
                           color: MyTheme.dark,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5)),
@@ -724,7 +716,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                                 child: "+"
                                     .text
                                     .bold
-                                    .textStyle(TextStyle(fontSize: 8))
+                                    .textStyle(const TextStyle(fontSize: 8))
                                     .color(currentTheme.colorScheme.primary)
                                     .make()),
                           ),
@@ -733,7 +725,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                     ],
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: Get.width / 2.5,
                   height: Get.height * 0.07,
                   child: Card(
@@ -767,7 +759,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                           // );
                           await checkProductExistance(
                             color: selectedOption.value,
-                              uId: user!.uid,
+                              uId: user.uid,
                               quantityIncrement: incquantity.value);
                           incquantity.value.isEqual(0)
                               ? ScaffoldMessenger.of(context)
@@ -797,7 +789,7 @@ class _ProductdetailscreenState extends State<ProductDetailScreen> {
                           children: [
                             "Add to cart".text.color(Colors.white).make(),
                             5.widthBox,
-                            Icon(
+                            const Icon(
                               CupertinoIcons.cart_badge_plus,
                               color: Colors.white,
                             )

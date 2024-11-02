@@ -4,9 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/GetDeviceTokenController.dart';
-import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/models/user-model.dart';
-import 'package:flutter_application_1/screens/user-panel/mainScreen.dart';
 import 'package:flutter_application_1/screens/user-panel/navigationMenu.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -53,7 +51,7 @@ class GoogleSignInController extends GetxController {
             city: '',
           );
           await FirebaseFirestore.instance.collection('users').doc(user.uid).set(userModel.toMap());
-          Get.offAll(() => NavigationMenu());
+          Get.offAll(() => const NavigationMenu());
         }
       } else {
         // Handle the case where the user cancels the sign-in

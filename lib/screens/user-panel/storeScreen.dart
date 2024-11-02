@@ -9,7 +9,6 @@ import 'package:velocity_x/velocity_x.dart';
 
 import '../../controllers/CartItemsController.dart';
 import '../../widgets/SearchWidget.dart';
-import '../../widgets/customDrawer.dart';
 import 'cartScreen.dart';
 
 class StoreScreen extends StatefulWidget {
@@ -47,14 +46,14 @@ class _StoreScreenState extends State<StoreScreen>
       controller: tabController,
       isScrollable: true,
       tabAlignment: TabAlignment.start,
-      padding: EdgeInsets.all(0),
+      padding: const EdgeInsets.all(0),
       dividerColor: currentTheme.colorScheme.primary,
       indicatorColor: currentTheme.colorScheme.onPrimary,
       labelColor: currentTheme.colorScheme.onPrimary,
       unselectedLabelColor: Colors.grey,
       overlayColor: WidgetStatePropertyAll(currentTheme.primaryColor),
       
-      tabs: [
+      tabs: const [
         Tab(child: Text('Phones')),
         Tab(child: Text('Tablets')),
         Tab(child: Text('Headphones')),
@@ -67,29 +66,29 @@ class _StoreScreenState extends State<StoreScreen>
         actions: [
           InkWell(
               onTap: () => Get.to(() => SearchScreen()),
-              child: Icon(Iconsax.search_normal).pOnly(right: 10)),
+              child: const Icon(Iconsax.search_normal).pOnly(right: 10)),
           InkWell(
-            onTap: () => Get.to(() => CartScreen()),
+            onTap: () => Get.to(() => const CartScreen()),
             child: StreamBuilder<int>(
               stream: cartItemsController
                   .getCartItemsCount(), // Fetch the cart item count
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Container(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Icon(CupertinoIcons.cart),
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(CupertinoIcons.cart),
                   ); // Display an empty cart icon or a loading indicator
                 } else if (snapshot.hasError) {
                   return Container(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Icon(CupertinoIcons.cart),
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(CupertinoIcons.cart),
                   ); // Handle error case if necessary
                 } else {
                   return Container(
                     height: 40,
                     width: 40,
-                    padding: EdgeInsets.only(right: 20),
-                    child: Icon(CupertinoIcons
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(CupertinoIcons
                         .cart), // Show the cart icon with the item count
                   )
                       .badge(
@@ -127,7 +126,7 @@ class _StoreScreenState extends State<StoreScreen>
                       .bold
                       .make()
                       .pOnly(left: 15, top: 20),
-                  BrandWidget(),
+                  const BrandWidget(),
                 ],
               ),
             ),

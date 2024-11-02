@@ -7,7 +7,7 @@ class HeadingWidgetCat extends StatelessWidget {
   final String headingSubtitle;
   final VoidCallback onTap;
   final String buttonText;
-  HeadingWidgetCat(
+  const HeadingWidgetCat(
       {super.key,
       required this.headingTitle,
       required this.headingSubtitle,
@@ -17,10 +17,10 @@ class HeadingWidgetCat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentTheme = Theme.of(context);
-    return Container(
+    return SizedBox(
       height: Get.height/24,
       child: Padding(
-        padding: EdgeInsets.only(left: 15),
+        padding: const EdgeInsets.only(left: 15),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -29,7 +29,7 @@ class HeadingWidgetCat extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                headingTitle.text.extraBold.textStyle(TextStyle(fontSize: 17)).color(Colors.white).make(),
+                headingTitle.text.extraBold.textStyle(const TextStyle(fontSize: 17)).color(Colors.white).make(),
                 // Text(
                 //   headingTitle,
                 //   style: TextStyle(

@@ -7,7 +7,7 @@ class HeadingWidget extends StatelessWidget {
   final String headingSubtitle;
   final VoidCallback onTap;
   final String buttonText;
-  HeadingWidget(
+  const HeadingWidget(
       {super.key,
       required this.headingTitle,
       required this.headingSubtitle,
@@ -19,9 +19,9 @@ class HeadingWidget extends StatelessWidget {
     final currentTheme = Theme.of(context);
     return Container(
       height: Get.height/12,
-      margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 4.0),
+      margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 4.0),
       child: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -50,7 +50,7 @@ class HeadingWidget extends StatelessWidget {
                     border: Border.all(
                         color: currentTheme.colorScheme.onPrimary, width: 1.5)),
                 child: Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: buttonText
                         .text
                         .bold

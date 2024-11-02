@@ -1,22 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/controllers/CartPriceController.dart';
 import 'package:flutter_application_1/models/product-model.dart';
 import 'package:flutter_application_1/models/wishlist-model.dart';
 import 'package:flutter_application_1/screens/user-panel/ProductDetailScreen.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:image_card/image_card.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../controllers/CartItemsController.dart';
 import '../../controllers/wishlistController.dart';
-import '../../models/cart-model.dart';
 import 'SearchScreen.dart';
 import 'cartScreen.dart';
 
@@ -41,9 +37,10 @@ class _WishlistScreenState extends State<WishlistScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, color: Colors.white),
-          if (text != null) SizedBox(width: 8),
+          if (text != null) const SizedBox(width: 8),
           if (text != null)
-            Text(text, style: TextStyle(color: Colors.white, fontSize: 16)),
+            Text(text,
+                style: const TextStyle(color: Colors.white, fontSize: 16)),
         ],
       ),
     );
@@ -61,33 +58,35 @@ class _WishlistScreenState extends State<WishlistScreen> {
         actions: [
           InkWell(
               onTap: () => Get.to(() => SearchScreen()),
-              child: Icon(Iconsax.search_normal).pOnly(right: 10)),
+              child: const Icon(Iconsax.search_normal).pOnly(right: 10)),
           InkWell(
-            onTap: () => Get.to(() => CartScreen()),
+            onTap: () => Get.to(() => const CartScreen()),
             child: StreamBuilder<int>(
               stream: cartItemsController
                   .getCartItemsCount(), // Fetch the cart item count
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Container(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Icon(CupertinoIcons.cart),
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(CupertinoIcons.cart),
                   ); // Display an empty cart icon or a loading indicator
                 } else if (snapshot.hasError) {
                   return Container(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Icon(CupertinoIcons.cart),
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(CupertinoIcons.cart),
                   ); // Handle error case if necessary
                 } else {
                   return Container(
                     height: 40,
                     width: 40,
-                    padding: EdgeInsets.only(right: 20),
-                    child: Icon(CupertinoIcons
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(CupertinoIcons
                         .cart), // Show the cart icon with the item count
                   )
                       .badge(
-                        textStyle: TextStyle(color: currentTheme.colorScheme.surface,fontSize: 10),
+                          textStyle: TextStyle(
+                              color: currentTheme.colorScheme.surface,
+                              fontSize: 10),
                           count: snapshot.data ?? 0,
                           position: VxBadgePosition.rightTop,
                           color: currentTheme.colorScheme.onPrimary)
@@ -113,14 +112,15 @@ class _WishlistScreenState extends State<WishlistScreen> {
               .doc(user!.uid)
               .collection('wishlistProducts')
               .snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
-              return Center(child: Text("Error"));
+              return const Center(child: Text("Error"));
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Container(
+              return SizedBox(
                 height: Get.height / 5,
-                child: Center(
+                child: const Center(
                   child: CupertinoActivityIndicator(),
                 ),
               );
@@ -130,10 +130,10 @@ class _WishlistScreenState extends State<WishlistScreen> {
                 child: "No Products Found".text.make(),
               );
             }
-        
+
             if (snapshot.data != null) {
               return Padding(
-                padding: EdgeInsets.only(left: 5, right: 5),
+                padding: const EdgeInsets.only(left: 5, right: 5),
                 child: Column(
                   children: [
                     Expanded(
@@ -161,7 +161,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                               updatedAt: productData['updatedAt'],
                               isBest: productData['isBest'],
                             );
-        
+
                             ProductModel productModel = ProductModel(
                               brandId: productData['brandId'],
                               brandName: productData['brandName'],
@@ -181,11 +181,11 @@ class _WishlistScreenState extends State<WishlistScreen> {
                               updatedAt: productData['updatedAt'],
                               isBest: productData['isBest'],
                             );
-        
+
                             wishlistController.checkIfProductInWishlist(
                                 productId: productModel.productId,
-                                uId: user!.uid);
-        
+                                uId: user.uid);
+
                             return Container(
                               color: currentTheme.primaryColor,
                               child: SwipeActionCell(
@@ -196,10 +196,14 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                       content: Padding(
                                         padding: const EdgeInsets.all(0),
                                         child: Container(
-                                          
-                                          margin: EdgeInsets.all(0),
+                                          margin: const EdgeInsets.all(0),
                                           height: Get.height / 10.5,
-                                          child: Row(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: Colors.red,
+                                          ),
+                                          child: const Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
@@ -207,10 +211,6 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                                   color: Colors.white),
                                               SizedBox(width: 8),
                                             ],
-                                          ),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                            color: Colors.red,
                                           ),
                                         ),
                                       ),
@@ -220,7 +220,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                         // Perform the deletion
                                         await FirebaseFirestore.instance
                                             .collection('wishlist')
-                                            .doc(user!.uid)
+                                            .doc(user.uid)
                                             .collection('wishlistProducts')
                                             .doc(wishlistModel.productId)
                                             .delete();
@@ -229,72 +229,86 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                   ],
                                   key: ObjectKey(wishlistModel.productId),
                                   child: InkWell(
-                                    onTap: () => Get.to(() => ProductDetailScreen(
-                                        productModel: productModel)),
+                                    onTap: () => Get.to(() =>
+                                        ProductDetailScreen(
+                                            productModel: productModel)),
                                     child: Container(
                                       color: currentTheme.primaryColor,
                                       child: Card(
                                         shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10)),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
                                         elevation: 5,
                                         child: VxBox(
                                           child: Row(
                                             children: [
                                               CatalogImage(
-                                                  image:
-                                                      wishlistModel.productImages[0]),
+                                                  image: wishlistModel
+                                                      .productImages[0]),
                                               Expanded(
                                                 child: Padding(
-                                                  padding: EdgeInsets.all(0),
+                                                  padding:
+                                                      const EdgeInsets.all(0),
                                                   child: Container(
                                                     child: Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment.center,
+                                                          MainAxisAlignment
+                                                              .center,
                                                       children: [
                                                         wishlistModel
-                                                            .productName.text.bold.lg
+                                                            .productName
+                                                            .text
+                                                            .bold
+                                                            .lg
                                                             .overflow(
-                                                                TextOverflow.ellipsis)
+                                                                TextOverflow
+                                                                    .ellipsis)
                                                             .color(currentTheme
-                                                                .colorScheme.onPrimary)
+                                                                .colorScheme
+                                                                .onPrimary)
                                                             .make()
                                                             .pOnly(right: 10),
                                                         4.heightBox,
                                                         Row(
                                                           children: [
-                                                            FutureBuilder<String>(
-                                                              future:
-                                                                  fetchBrandImageUrl(
-                                                                      wishlistModel
-                                                                          .brandId),
-                                                              builder:
-                                                                  (context, snapshot) {
+                                                            FutureBuilder<
+                                                                String>(
+                                                              future: fetchBrandImageUrl(
+                                                                  wishlistModel
+                                                                      .brandId),
+                                                              builder: (context,
+                                                                  snapshot) {
                                                                 if (snapshot
                                                                         .connectionState ==
                                                                     ConnectionState
                                                                         .waiting) {
-                                                                  return CircularProgressIndicator();
+                                                                  return const Text("");
                                                                 } else if (snapshot
                                                                     .hasError) {
-                                                                  print(snapshot.error);
-                                                                  return Icon(
-                                                                      Icons.error);
+                                                                  print(snapshot
+                                                                      .error);
+                                                                  return const Icon(
+                                                                      Icons
+                                                                          .error);
                                                                 } else {
                                                                   return CachedNetworkImage(
                                                                     imageUrl:
-                                                                        snapshot.data!,
+                                                                        snapshot
+                                                                            .data!,
                                                                     width: 20,
                                                                     height: 20,
-                                                                    placeholder: (context,
-                                                                            url) =>
-                                                                        CircularProgressIndicator(),
-                                                                    errorWidget:
-                                                                        (context, url,
-                                                                                error) =>
-                                                                            Icon(Icons
-                                                                                .error),
+                                                                    placeholder:
+                                                                        (context,
+                                                                                url) =>
+                                                                            const CircularProgressIndicator(),
+                                                                    errorWidget: (context,
+                                                                            url,
+                                                                            error) =>
+                                                                        const Icon(
+                                                                            Icons.error),
                                                                   );
                                                                 }
                                                               },
@@ -303,16 +317,18 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                                                 alignment: Alignment
                                                                     .centerLeft,
                                                                 padding:
-                                                                    EdgeInsets.only(
-                                                                        left: 2),
-                                                                child: "${wishlistModel.brandName}"
+                                                                    const EdgeInsets.only(
+                                                                        left:
+                                                                            2),
+                                                                child: wishlistModel
+                                                                    .brandName
                                                                     .text
-                                                                    .textStyle(
-                                                                        TextStyle(
-                                                                            fontSize:
-                                                                                10))
+                                                                    .textStyle(const TextStyle(
+                                                                        fontSize:
+                                                                            10))
                                                                     .align(
-                                                                        TextAlign.left)
+                                                                        TextAlign
+                                                                            .left)
                                                                     .color(currentTheme
                                                                         .colorScheme
                                                                         .tertiary)
@@ -326,11 +342,10 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                                           ],
                                                         ),
                                                         // 10.0.heightBox,
-                                                        ButtonBar(
-                                                          alignment: MainAxisAlignment
-                                                              .spaceBetween,
-                                                          buttonPadding:
-                                                              EdgeInsets.zero,
+                                                        OverflowBar(
+                                                          alignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
                                                           children: [
                                                             "Rs ${wishlistModel.fullPrice}"
                                                                 .text
@@ -343,35 +358,36 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                                                 child: Card(
                                                                   shape: RoundedRectangleBorder(
                                                                       borderRadius:
-                                                                          BorderRadius
-                                                                              .circular(
-                                                                                  50)),
-                                                                  color: currentTheme.primaryColor,
-                                                                  child: IconButton(
-                                                                    icon: wishlistController.isFav(
-                                                                            productModel
-                                                                                .productId)
-                                                                        ? Icon(Iconsax
+                                                                          BorderRadius.circular(
+                                                                              50)),
+                                                                  color: currentTheme
+                                                                      .primaryColor,
+                                                                  child:
+                                                                      IconButton(
+                                                                    icon: wishlistController.isFav(productModel
+                                                                            .productId)
+                                                                        ? const Icon(Iconsax
                                                                             .heart5)
-                                                                        : Icon(Iconsax
-                                                                            .heart),
-                                                                    color: wishlistController.isFav(
-                                                                            productModel
-                                                                                .productId)
-                                                                        ? Colors.red
+                                                                        : const Icon(
+                                                                            Iconsax.heart),
+                                                                    color: wishlistController.isFav(productModel
+                                                                            .productId)
+                                                                        ? Colors
+                                                                            .red
                                                                         : currentTheme
                                                                             .colorScheme
                                                                             .onPrimary,
-                                                                    onPressed: () {
-                                                                      wishlistController
-                                                                          .toggleWishlistStatus(
-                                                                              uId: user!
-                                                                                  .uid,
-                                                                              productModel:
-                                                                                  productModel);
+                                                                    onPressed:
+                                                                        () {
+                                                                      wishlistController.toggleWishlistStatus(
+                                                                          uId: user
+                                                                              .uid,
+                                                                          productModel:
+                                                                              productModel);
                                                                     },
                                                                   ),
-                                                                ).pOnly(right: 10),
+                                                                ).pOnly(
+                                                                    right: 10),
                                                               ),
                                                             ),
                                                           ],
@@ -384,7 +400,8 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                             ],
                                           ),
                                         )
-                                            .color(currentTheme.colorScheme.surface)
+                                            .color(currentTheme
+                                                .colorScheme.surface)
                                             .rounded
                                             .square(Get.height / 6.5)
                                             .make()

@@ -15,7 +15,7 @@ class SearchWidget extends StatelessWidget {
     
     final getTheme = Theme.of(context);
     return Container(
-      margin: EdgeInsets.only(top: 4),
+      margin: const EdgeInsets.only(top: 4),
       width: Get.width / 1.1,
       height: Get.height * 0.075,
       child: TextFormField(
@@ -45,7 +45,7 @@ class SearchWidget extends StatelessWidget {
                 color: getTheme
                     .colorScheme.onTertiary), // Border color when focused
           ),
-          contentPadding: EdgeInsets.only(top: 2.0, left: 8.0),
+          contentPadding: const EdgeInsets.only(top: 2.0, left: 8.0),
         ),
       ).pOnly(bottom: 0),
     );

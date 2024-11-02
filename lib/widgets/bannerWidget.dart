@@ -23,7 +23,7 @@ class _BannerWidgetState extends State<BannerWidget> {
   @override
   void initState() {
     super.initState();
-    _autoScrollTimer = Timer.periodic(Duration(seconds: 3), (timer) => _autoScroll());
+    _autoScrollTimer = Timer.periodic(const Duration(seconds: 3), (timer) => _autoScroll());
   }
 
   @override
@@ -37,7 +37,7 @@ class _BannerWidgetState extends State<BannerWidget> {
     _pageController.jumpToPage(0); // Jump to the first slide
   } else {
     _pageController.nextPage(
-        duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+        duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
   }
 }
 
@@ -53,7 +53,7 @@ class _BannerWidgetState extends State<BannerWidget> {
             child: Obx(() {
               final bannerUrls = bannerController.bannerUrls; //list of urls
               if (bannerUrls.isEmpty) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
               return PageView.builder(
                 controller: _pageController,
@@ -70,11 +70,11 @@ class _BannerWidgetState extends State<BannerWidget> {
                         fit: BoxFit.cover,
                         
                         width: Get.width - 10, // Adjust width if needed
-                        placeholder: (context, url) => ColoredBox(
+                        placeholder: (context, url) => const ColoredBox(
                           color: Colors.grey,
                           child: Center(child: CircularProgressIndicator()),
                         ),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     ),
                   );

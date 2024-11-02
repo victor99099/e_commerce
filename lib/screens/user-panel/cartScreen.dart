@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/CartPriceController.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_application_1/screens/user-panel/checkOutScreen.dart';
 import 'package:flutter_application_1/services/getServiceKey.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:get/get.dart';
-import 'package:image_card/image_card.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../models/cart-model.dart';
@@ -37,9 +35,10 @@ class _CartScreenState extends State<CartScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, color: Colors.white),
-          if (text != null) SizedBox(width: 8),
+          if (text != null) const SizedBox(width: 8),
           if (text != null)
-            Text(text, style: TextStyle(color: Colors.white, fontSize: 16)),
+            Text(text,
+                style: const TextStyle(color: Colors.white, fontSize: 16)),
         ],
       ),
     );
@@ -52,9 +51,10 @@ class _CartScreenState extends State<CartScreen> {
     final PriceController priceController = Get.put(PriceController());
 
     return Scaffold(
+      backgroundColor: currentTheme.primaryColor,
       appBar: AppBar(
         iconTheme: IconThemeData(color: currentTheme.colorScheme.tertiary),
-        backgroundColor: currentTheme.colorScheme.surface,
+        backgroundColor: Colors.transparent,
         title: "Cart".text.color(currentTheme.colorScheme.tertiary).bold.make(),
       ),
       body: StreamBuilder(
@@ -65,12 +65,12 @@ class _CartScreenState extends State<CartScreen> {
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
-            return Center(child: Text("Error"));
+            return const Center(child: Text("Error"));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container(
+            return SizedBox(
               height: Get.height / 5,
-              child: Center(
+              child: const Center(
                 child: CupertinoActivityIndicator(),
               ),
             );
@@ -83,7 +83,7 @@ class _CartScreenState extends State<CartScreen> {
 
           if (snapshot.data != null) {
             return Padding(
-              padding: EdgeInsets.only(left: 5, right: 5),
+              padding: const EdgeInsets.only(left: 5, right: 5),
               child: Column(
                 children: [
                   Expanded(
@@ -143,9 +143,13 @@ class _CartScreenState extends State<CartScreen> {
                                   content: Padding(
                                     padding: const EdgeInsets.all(0),
                                     child: Container(
-                                      margin: EdgeInsets.all(0),
+                                      margin: const EdgeInsets.all(0),
                                       height: Get.height / 6.5,
-                                      child: Row(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.red,
+                                      ),
+                                      child: const Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
@@ -153,10 +157,6 @@ class _CartScreenState extends State<CartScreen> {
                                               color: Colors.white),
                                           SizedBox(width: 8),
                                         ],
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.red,
                                       ),
                                     ),
                                   ),
@@ -166,7 +166,7 @@ class _CartScreenState extends State<CartScreen> {
                                     // Perform the deletion
                                     await FirebaseFirestore.instance
                                         .collection('cart')
-                                        .doc(user!.uid)
+                                        .doc(user.uid)
                                         .collection('cartOrders')
                                         .doc(cartModel.productId)
                                         .delete();
@@ -177,253 +177,278 @@ class _CartScreenState extends State<CartScreen> {
                               child: InkWell(
                                 onTap: () => Get.to(() => ProductDetailScreen(
                                     productModel: productModel)),
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  elevation: 5,
-                                  child: VxBox(
-                                    child: Row(
-                                      children: [
-                                        CatalogImage(
-                                            image: cartModel.productImages[0]),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: EdgeInsets.all(0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                cartModel
-                                                    .productName.text.bold.lg
-                                                    .overflow(
-                                                        TextOverflow.ellipsis)
-                                                    .color(currentTheme
-                                                        .colorScheme.onPrimary)
-                                                    .make()
-                                                    .pOnly(right: 10),
-                                                4.heightBox,
-                                                Row(
-                                                  children: [
-                                                    FutureBuilder<String>(
-                                                      future:
-                                                          fetchBrandImageUrl(
-                                                              cartModel
-                                                                  .brandId),
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        if (snapshot
-                                                                .connectionState ==
-                                                            ConnectionState
-                                                                .waiting) {
-                                                          return CircularProgressIndicator();
-                                                        } else if (snapshot
-                                                            .hasError) {
-                                                          print(snapshot.error);
-                                                          return Icon(
-                                                              Icons.error);
-                                                        } else {
-                                                          return CachedNetworkImage(
-                                                            imageUrl:
-                                                                snapshot.data!,
-                                                            width: 20,
-                                                            height: 20,
-                                                            placeholder: (context,
-                                                                    url) =>
-                                                                CircularProgressIndicator(),
-                                                            errorWidget:
-                                                                (context, url,
-                                                                        error) =>
-                                                                    Icon(Icons
-                                                                        .error),
-                                                          );
-                                                        }
-                                                      },
-                                                    ),
-                                                    Container(
-                                                        alignment: Alignment
-                                                            .centerLeft,
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 2),
-                                                        child: "${cartModel.brandName}"
-                                                            .text
-                                                            .textStyle(
-                                                                TextStyle(
-                                                                    fontSize:
-                                                                        10))
-                                                            .align(
-                                                                TextAlign.left)
-                                                            .color(currentTheme
-                                                                .colorScheme
-                                                                .tertiary)
-                                                            .make()),
-                                                    Image.asset(
-                                                      'assets/images/verifiedicon.png', // Replace with your icon path
-                                                      width: 12,
-                                                      height: 12,
-                                                      // color: Colors.white,
-                                                    ).pOnly(left: 2),
-                                                  ],
-                                                ),
-                                                4.heightBox,
-                                                "Color : ${cartModel.productColor}"
-                                                    .text
-                                                    .textStyle(
-                                                        context.captionStyle)
-                                                    .light
-                                                    .overflow(
-                                                        TextOverflow.ellipsis)
-                                                    .color(currentTheme
-                                                        .colorScheme.tertiary)
-                                                    .make()
-                                                    .pOnly(right: 10),
-                                                // 10.0.heightBox,
-                                                Container(
-                                                  margin: EdgeInsets.all(0),
-                                                  height: Get.height * 0.05,
-                                                  child: ButtonBar(
-                                                    alignment: MainAxisAlignment
-                                                        .spaceBetween,
-                                                    buttonPadding:
-                                                        EdgeInsets.zero,
+                                child: Container(
+                                  color: currentTheme.primaryColor,
+                                  child: Card(
+                                    color: currentTheme.primaryColorLight,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    elevation: 5,
+                                    child: VxBox(
+                                      child: Row(
+                                        children: [
+                                          CatalogImage(
+                                              image:
+                                                  cartModel.productImages[0]),
+                                          Expanded(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  cartModel
+                                                      .productName.text.bold.lg
+                                                      .overflow(
+                                                          TextOverflow.ellipsis)
+                                                      .color(currentTheme
+                                                          .colorScheme
+                                                          .onPrimary)
+                                                      .make()
+                                                      .pOnly(right: 10),
+
+                                                  Row(
                                                     children: [
-                                                      "Rs ${cartModel.productTotalPrice}"
-                                                          .text
-                                                          .bold
-                                                          .xl
-                                                          .make(),
-                                                      Row(
-                                                        children: [
-                                                          Container(
-                                                            width:
-                                                                Get.width / 9,
-                                                            child: Card(
-                                                              color: currentTheme
+                                                      FutureBuilder<String>(
+                                                        future:
+                                                            fetchBrandImageUrl(
+                                                                cartModel
+                                                                    .brandId),
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          if (snapshot
+                                                                  .connectionState ==
+                                                              ConnectionState
+                                                                  .waiting) {
+                                                            return const Text("");
+                                                          } else if (snapshot
+                                                              .hasError) {
+                                                            print(
+                                                                snapshot.error);
+                                                            return const Icon(
+                                                                Icons.error);
+                                                          } else {
+                                                            return CachedNetworkImage(
+                                                              imageUrl: snapshot
+                                                                  .data!,
+                                                              width: 20,
+                                                              height: 20,
+                                                              placeholder: (context,
+                                                                      url) =>
+                                                                  const CircularProgressIndicator(),
+                                                              errorWidget: (context,
+                                                                      url,
+                                                                      error) =>
+                                                                  const Icon(Icons
+                                                                      .error),
+                                                            );
+                                                          }
+                                                        },
+                                                      ),
+                                                      Container(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          padding: const EdgeInsets
+                                                              .only(left: 2),
+                                                          child: cartModel
+                                                              .brandName.text
+                                                              .textStyle(
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          10))
+                                                              .align(TextAlign
+                                                                  .left)
+                                                              .color(currentTheme
                                                                   .colorScheme
-                                                                  .secondary,
-                                                              shape:
-                                                                  CircleBorder(),
-                                                              elevation: 3,
-                                                              child: TextButton(
-                                                                onPressed:
-                                                                    () async {
-                                                                  if (cartModel
-                                                                          .productQuantity >
-                                                                      1) {
-                                                                    await FirebaseFirestore
-                                                                        .instance
-                                                                        .collection(
-                                                                            'cart')
-                                                                        .doc(user!
-                                                                            .uid)
-                                                                        .collection(
-                                                                            'cartOrders')
-                                                                        .doc(cartModel
-                                                                            .productId)
-                                                                        .update({
-                                                                      'productQuantity':
-                                                                          cartModel.productQuantity -
-                                                                              1,
-                                                                      'productTotalPrice': (double.parse(cartModel.fullPrice.replaceAll(
-                                                                              ',',
-                                                                              ''))) *
-                                                                          (cartModel.productQuantity -
-                                                                              1)
-                                                                    });
-                                                                  } else {
-                                                                    await FirebaseFirestore
-                                                                        .instance
-                                                                        .collection(
-                                                                            'cart')
-                                                                        .doc(user!
-                                                                            .uid)
-                                                                        .collection(
-                                                                            'cartOrders')
-                                                                        .doc(cartModel
-                                                                            .productId)
-                                                                        .delete();
-                                                                  }
-                                                                },
-                                                                child: Center(
-                                                                    child: "-"
-                                                                        .text
-                                                                        .bold
-                                                                        .color(currentTheme
-                                                                            .colorScheme
-                                                                            .primary)
-                                                                        .make()),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width:
-                                                                Get.width / 9,
-                                                            child: Card(
-                                                              color: currentTheme
-                                                                  .colorScheme
-                                                                  .secondary,
-                                                              shape:
-                                                                  CircleBorder(),
-                                                              elevation: 3,
-                                                              child: TextButton(
-                                                                onPressed:
-                                                                    () async {
-                                                                  if (cartModel
-                                                                          .productQuantity >
-                                                                      0) {
-                                                                    await FirebaseFirestore
-                                                                        .instance
-                                                                        .collection(
-                                                                            'cart')
-                                                                        .doc(user!
-                                                                            .uid)
-                                                                        .collection(
-                                                                            'cartOrders')
-                                                                        .doc(cartModel
-                                                                            .productId)
-                                                                        .update({
-                                                                      'productQuantity':
-                                                                          cartModel.productQuantity +
-                                                                              1,
-                                                                      'productTotalPrice': (double.parse(cartModel.fullPrice.replaceAll(
-                                                                              ',',
-                                                                              ''))) *
-                                                                          (cartModel.productQuantity +
-                                                                              1)
-                                                                    });
-                                                                  }
-                                                                },
-                                                                child: Center(
-                                                                    child: cartModel
-                                                                        .productQuantity
-                                                                        .text
-                                                                        .bold
-                                                                        .color(currentTheme
-                                                                            .colorScheme
-                                                                            .primary)
-                                                                        .make()),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ).pOnly(right: 10)
+                                                                  .tertiary)
+                                                              .make()),
+                                                      Image.asset(
+                                                        'assets/images/verifiedicon.png', // Replace with your icon path
+                                                        width: 12,
+                                                        height: 12,
+                                                        // color: Colors.white,
+                                                      ).pOnly(left: 2),
                                                     ],
                                                   ),
-                                                )
-                                              ],
+                                                  4.heightBox,
+                                                  Row(
+                                                    children: [
+                                                      "Color : "
+                                                          .text
+                                                          .textStyle(context
+                                                              .captionStyle)
+                                                          .light
+                                                          .overflow(TextOverflow
+                                                              .ellipsis)
+                                                          .color(currentTheme
+                                                              .colorScheme
+                                                              .tertiary)
+                                                          .make(),
+                                                      "${cartModel.productColor}"
+                                                          .text
+                                                          .textStyle(context
+                                                              .captionStyle)
+                                                          .light
+                                                          .overflow(TextOverflow
+                                                              .ellipsis)
+                                                          .fontWeight(
+                                                              FontWeight.bold)
+                                                          .color(currentTheme
+                                                              .colorScheme
+                                                              .tertiary)
+                                                          .make()
+                                                          .pOnly(right: 10),
+                                                    ],
+                                                  ),
+                                                  // 10.0.heightBox,
+                                                  Container(
+                                                    margin:
+                                                        const EdgeInsets.all(0),
+                                                    height: Get.height * 0.05,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        "Rs ${cartModel.productTotalPrice}"
+                                                            .text
+                                                            .bold
+                                                            .xl
+                                                            .make(),
+                                                        Row(
+                                                          children: [
+                                                            SizedBox(
+                                                              width:
+                                                                  Get.width / 9,
+                                                              child: Card(
+                                                                color: currentTheme
+                                                                    .colorScheme
+                                                                    .secondary,
+                                                                shape:
+                                                                    const CircleBorder(),
+                                                                elevation: 3,
+                                                                child:
+                                                                    TextButton(
+                                                                  onPressed:
+                                                                      () async {
+                                                                    if (cartModel
+                                                                            .productQuantity >
+                                                                        1) {
+                                                                      await FirebaseFirestore
+                                                                          .instance
+                                                                          .collection(
+                                                                              'cart')
+                                                                          .doc(user
+                                                                              .uid)
+                                                                          .collection(
+                                                                              'cartOrders')
+                                                                          .doc(cartModel
+                                                                              .productId)
+                                                                          .update({
+                                                                        'productQuantity':
+                                                                            cartModel.productQuantity -
+                                                                                1,
+                                                                        'productTotalPrice': (double.parse(cartModel.fullPrice.replaceAll(',',
+                                                                                ''))) *
+                                                                            (cartModel.productQuantity -
+                                                                                1)
+                                                                      });
+                                                                    } else {
+                                                                      await FirebaseFirestore
+                                                                          .instance
+                                                                          .collection(
+                                                                              'cart')
+                                                                          .doc(user
+                                                                              .uid)
+                                                                          .collection(
+                                                                              'cartOrders')
+                                                                          .doc(cartModel
+                                                                              .productId)
+                                                                          .delete();
+                                                                    }
+                                                                  },
+                                                                  child: Center(
+                                                                      child: "-"
+                                                                          .text
+                                                                          .bold
+                                                                          .color(currentTheme
+                                                                              .colorScheme
+                                                                              .primary)
+                                                                          .make()),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              width:
+                                                                  Get.width / 9,
+                                                              child: Card(
+                                                                color: currentTheme
+                                                                    .colorScheme
+                                                                    .secondary,
+                                                                shape:
+                                                                    const CircleBorder(),
+                                                                elevation: 3,
+                                                                child:
+                                                                    TextButton(
+                                                                  onPressed:
+                                                                      () async {
+                                                                    if (cartModel
+                                                                            .productQuantity >
+                                                                        0) {
+                                                                      await FirebaseFirestore
+                                                                          .instance
+                                                                          .collection(
+                                                                              'cart')
+                                                                          .doc(user
+                                                                              .uid)
+                                                                          .collection(
+                                                                              'cartOrders')
+                                                                          .doc(cartModel
+                                                                              .productId)
+                                                                          .update({
+                                                                        'productQuantity':
+                                                                            cartModel.productQuantity +
+                                                                                1,
+                                                                        'productTotalPrice': (double.parse(cartModel.fullPrice.replaceAll(',',
+                                                                                ''))) *
+                                                                            (cartModel.productQuantity +
+                                                                                1)
+                                                                      });
+                                                                    }
+                                                                  },
+                                                                  child: Center(
+                                                                      child: cartModel
+                                                                          .productQuantity
+                                                                          .text
+                                                                          .bold
+                                                                          .color(currentTheme
+                                                                              .colorScheme
+                                                                              .primary)
+                                                                          .make()),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ).pOnly(right: 10)
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                      .color(currentTheme.colorScheme.surface)
-                                      .rounded
-                                      .square(Get.height / 6.5)
-                                      .make()
-                                      .py4(),
+                                        ],
+                                      ),
+                                    )
+                                        .color(currentTheme.primaryColorLight)
+                                        .rounded
+                                        .square(Get.height / 6.5)
+                                        .make()
+                                        .py4(),
+                                  ),
                                 ),
                               ));
                         }),
@@ -431,8 +456,8 @@ class _CartScreenState extends State<CartScreen> {
                   20.heightBox,
                   Obx(
                     () => Container(
-                      margin: EdgeInsets.all(0),
-                      padding: EdgeInsets.all(0),
+                      margin: const EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(0),
                       width: Get.width - 10,
                       child: Card(
                         color: currentTheme.colorScheme.secondary,
@@ -442,9 +467,12 @@ class _CartScreenState extends State<CartScreen> {
                         child: TextButton(
                           onPressed: () async {
                             GetServiceKey getServiceKey = GetServiceKey();
-                            final serviceKey = await getServiceKey.getServerKeyToken();
+                            final serviceKey =
+                                await getServiceKey.getServerKeyToken();
                             print("Service key :  $serviceKey");
-                            Get.to(CheckoutScreen(total : priceController.totalPrice.value.toStringAsFixed(1)));
+                            Get.to(CheckoutScreen(
+                                total: priceController.totalPrice.value
+                                    .toStringAsFixed(1)));
                           },
                           child: Center(
                               child:

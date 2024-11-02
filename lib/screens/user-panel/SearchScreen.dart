@@ -22,8 +22,8 @@ class SearchScreen extends StatelessWidget {
       appBar: AppBar(
         actions: [
           InkWell(
-            onTap: () => Get.to(() => CartScreen()),
-            child: Icon(CupertinoIcons.cart).pOnly(right: 20),
+            onTap: () => Get.to(() => const CartScreen()),
+            child: const Icon(CupertinoIcons.cart).pOnly(right: 20),
           ),
         ],
         iconTheme: IconThemeData(color: getTheme.colorScheme.tertiary),
@@ -36,8 +36,8 @@ class SearchScreen extends StatelessWidget {
           Row(
             children: [
               Container(
-                  margin: EdgeInsets.all(0),
-                  padding: EdgeInsets.only(left: 10, right: 10),
+                  margin: const EdgeInsets.all(0),
+                  padding: const EdgeInsets.only(left: 10, right: 10),
                   width: Get.width,
                   height: Get.height * 0.07,
                   child: TextFormField(
@@ -73,7 +73,7 @@ class SearchScreen extends StatelessWidget {
                             color: getTheme.colorScheme
                                 .onTertiary), // Border color when focused
                       ),
-                      contentPadding: EdgeInsets.only(top: 2.0, left: 8.0),
+                      contentPadding: const EdgeInsets.only(top: 2.0, left: 8.0),
                     ),
                   )).pOnly(top: 10),
             ],
@@ -90,7 +90,7 @@ class SearchScreen extends StatelessWidget {
                       .color(getTheme.colorScheme.tertiaryFixed)
                       .xl
                       .make()),
-              Container(
+              SizedBox(
                 // color: Colors.black,
                 width: Get.width * 0.3,
                 height: Get.height * 0.1,
@@ -99,12 +99,12 @@ class SearchScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
 
                     // itemHeight: 25,
-                    padding: EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(0),
                     style: TextStyle(
                         color: getTheme.colorScheme.tertiaryFixed,
                         fontSize: 15),
                     dropdownColor: getTheme.colorScheme.surface,
-                    icon: Icon(Iconsax.sort),
+                    icon: const Icon(Iconsax.sort),
                     isDense: true,
                     iconSize: 20,
                     alignment: Alignment.centerLeft,
@@ -124,22 +124,22 @@ class SearchScreen extends StatelessWidget {
                             width: 4.0, // Thickness of the bottom line
                           ),
                         ),
-                        errorBorder: UnderlineInputBorder(
+                        errorBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors
                                 .red, // Custom color for the bottom line when there's an error
                             width: 2.0,
                           ),
                         ),
-                        contentPadding: EdgeInsets.all(0),
+                        contentPadding: const EdgeInsets.all(0),
                         fillColor: getTheme.colorScheme.surface,
                         labelStyle: TextStyle(
                             color: getTheme.colorScheme.tertiaryFixed)),
                     value: sortOption.value,
                     items: ['Name', 'Higher Price', 'Lower Price', 'Newest']
                         .map((option) => DropdownMenuItem<String>(
-                              child: Text(option),
                               value: option,
+                              child: Text(option),
                             ))
                         .toList(),
                     onChanged: (String? newValue) {

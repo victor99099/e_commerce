@@ -2,14 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/categories-model.dart';
 import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../models/product-model.dart';
 import 'ProductDetailScreen.dart';
-import 'singleCategoryScreen.dart';
 
 class AllProductsScreen extends StatefulWidget {
   const AllProductsScreen({super.key});
@@ -24,12 +22,12 @@ class _AllFlashSaleWidgetState extends State<AllProductsScreen> {
     final currentTheme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: currentTheme.colorScheme.secondary,
         title: "All Products".text.color(Colors.white).bold.make(),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
             20.heightBox,
@@ -42,12 +40,12 @@ class _AllFlashSaleWidgetState extends State<AllProductsScreen> {
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
-                    return Center(child: Text("Error"));
+                    return const Center(child: Text("Error"));
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Container(
+                    return SizedBox(
                       height: Get.height / 5,
-                      child: Center(
+                      child: const Center(
                         child: CupertinoActivityIndicator(),
                       ),
                     );
@@ -60,14 +58,14 @@ class _AllFlashSaleWidgetState extends State<AllProductsScreen> {
 
                   if (snapshot.data != null) {
                     return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         mainAxisSpacing: 3,
                         crossAxisSpacing: 4,
                         childAspectRatio: 0.85,
                       ),
                       itemCount: snapshot.data!.docs.length,
-                      padding: EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(0),
                       itemBuilder: (context, index) {
                         final productData = snapshot.data!.docs[index];
                         ProductModel productModel = ProductModel(
@@ -92,26 +90,26 @@ class _AllFlashSaleWidgetState extends State<AllProductsScreen> {
                           onTap: () => Get.to(() =>
                               ProductDetailScreen(productModel: productModel)),
                           child: Padding(
-                            padding: EdgeInsets.all(0),
+                            padding: const EdgeInsets.all(0),
                             child: Card(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
                               elevation: 5,
                               child: Container(
-                                padding: EdgeInsets.only(top: 10),
-                                margin: EdgeInsets.all(0),
+                                padding: const EdgeInsets.only(top: 10),
+                                margin: const EdgeInsets.all(0),
                                 decoration: BoxDecoration(
                                     color: currentTheme.colorScheme.primary,
                                     border:
                                         Border.all(color: Colors.transparent),
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(10))),
+                                        const BorderRadius.all(Radius.circular(10))),
                                 child: Center(
                                   child: Hero(
                                     tag: Key(productModel.productId),
                                     child: FillImageCard(
                                       contentPadding:
-                                          EdgeInsets.only(bottom: 0, top: 2),
+                                          const EdgeInsets.only(bottom: 0, top: 2),
                                       color: currentTheme.colorScheme.primary,
                                       borderRadius: 20,
                                       width: Get.width / 2.6,
@@ -124,7 +122,7 @@ class _AllFlashSaleWidgetState extends State<AllProductsScreen> {
                                         heightFactor: 0.2,
                                         child: Text(
                                           productModel.productName,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 11,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -132,13 +130,13 @@ class _AllFlashSaleWidgetState extends State<AllProductsScreen> {
                                         ),
                                       ),
                                       footer: Container(
-                                        padding: EdgeInsets.only(top: 5),
+                                        padding: const EdgeInsets.only(top: 5),
                                         height: 22,
                                         child: Row(
                                           children: [
                                             Text(
                                               "Rs ${productModel.fullPrice}",
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.bold),
                                             ),
