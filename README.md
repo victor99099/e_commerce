@@ -1,6 +1,13 @@
 # e_commerce
 
-A new Flutter project.
+An electronics e-commerce Flutter project.
+
+MVC Architecure
+FireStore Databse
+Hosted on Firebase
+Firebase Storage
+
+APK : https://drive.google.com/file/d/1qVtHuGTJNDdIjTYKy4b0rk39zKY_sWw6/view?usp=sharing
 
 ## Getting Started
 
